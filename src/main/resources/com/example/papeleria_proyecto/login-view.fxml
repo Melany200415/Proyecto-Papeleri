@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.papeleria_proyecto.controller.LoginController"
+            prefWidth="800.0"
+            prefHeight="500.0">
+
+    <children>
+
+        <HBox prefHeight="500.0" prefWidth="800.0">
+
+            <!-- Lado izquierdo -->
+            <VBox alignment="CENTER"
+                  prefHeight="500.0"
+                  prefWidth="350.0"
+                  spacing="15"
+                  style="-fx-background-color:#2E86C1;">
+
+                <!-- Aquí luego pueden colocar el logo -->
+                <ImageView fitHeight="120" fitWidth="120"/>
+
+                <Label text="PAPELERÍA"
+                       textFill="WHITE">
+                    <font>
+                        <Font size="28"/>
+                    </font>
+                </Label>
+
+                <Label text="Sistema de Gestión"
+                       textFill="WHITE">
+                    <font>
+                        <Font size="16"/>
+                    </font>
+                </Label>
+
+            </VBox>
+
+            <!-- Lado derecho -->
+            <VBox alignment="CENTER"
+                  prefHeight="500.0"
+                  prefWidth="450.0"
+                  spacing="15">
+
+                <padding>
+                    <Insets top="20" right="40" bottom="20" left="40"/>
+                </padding>
+
+                <Label text="Iniciar Sesión">
+                    <font>
+                        <Font size="28"/>
+                    </font>
+                </Label>
+
+                <TextField fx:id="txtUsuario"
+                           promptText="Usuario"
+                           prefWidth="250"/>
+
+                <PasswordField fx:id="txtContrasena"
+                               promptText="Contraseña"
+                               prefWidth="250"/>
+
+                <Button fx:id="btnIngresar"
+                        text="Iniciar Sesión"
+                        prefWidth="250"
+                        onAction="#iniciarSesion"/>
+
+                <Label fx:id="lblMensaje"
+                       text=""
+                       style="-fx-text-fill:red;"/>
+
+            </VBox>
+
+        </HBox>
+
+    </children>
+
+</AnchorPane>
