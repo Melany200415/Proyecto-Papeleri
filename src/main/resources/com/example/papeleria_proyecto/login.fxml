@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.papeleria_proyecto.LoginController"
+            prefWidth="500"
+            prefHeight="350">
+
+    <children>
+
+        <VBox spacing="15"
+              alignment="CENTER"
+              AnchorPane.topAnchor="30"
+              AnchorPane.bottomAnchor="30"
+              AnchorPane.leftAnchor="80"
+              AnchorPane.rightAnchor="80">
+
+            <Label text="INICIO DE SESIÓN"
+                   style="-fx-font-size:22px; -fx-font-weight:bold;"/>
+
+            <TextField fx:id="txtUsuario"
+                       promptText="Usuario"
+                       prefWidth="250"/>
+
+            <PasswordField fx:id="txtPassword"
+                           promptText="Contraseña"
+                           prefWidth="250"/>
+
+            <Button text="Iniciar Sesión"
+                    prefWidth="250"
+                    onAction="#iniciarSesion"/>
+
+            <Label fx:id="lblMensaje"
+                   style="-fx-text-fill:red;"/>
+
+        </VBox>
+
+    </children>
+
+</AnchorPane>
