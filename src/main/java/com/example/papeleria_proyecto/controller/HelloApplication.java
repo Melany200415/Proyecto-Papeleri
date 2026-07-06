@@ -1,4 +1,4 @@
-package com.example.papeleria_proyecto;
+package com.example.papeleria_proyecto.controller;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
