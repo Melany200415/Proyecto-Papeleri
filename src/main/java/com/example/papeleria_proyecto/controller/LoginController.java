@@ -22,12 +22,12 @@ public class LoginController {
 
     @FXML
     public void initialize() {
+     cbRol.getItems().addAll(
+            "Administrador",
+            "Cajero",
+            "Bodeguero"
+    );
 
-        cbRol.getItems().addAll(
-                "Administrador",
-                "Cajero",
-                "Bodeguero"
-        );
     }
 
     @FXML
@@ -70,4 +70,5 @@ public class LoginController {
             lblMensaje.setText("Datos incorrectos");
         }
     }
+    
 }

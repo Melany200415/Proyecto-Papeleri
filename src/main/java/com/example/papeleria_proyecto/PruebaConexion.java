@@ -6,18 +6,13 @@ import java.sql.Connection;
 public class PruebaConexion {
 
     public static void main(String[] args) {
-        try {
-            Connection con = Conexion.getConexion();
 
-            if (con != null) {
-                System.out.println("✅ Conexión exitosa");
-                con.close();
-            } else {
-                System.out.println("❌ La conexión es nula");
-            }
+        Connection con = Conexion.getConexion();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (con != null) {
+            System.out.println("La conexión fue exitosa.");
+        } else {
+            System.out.println("No se pudo conectar.");
         }
     }
 }
