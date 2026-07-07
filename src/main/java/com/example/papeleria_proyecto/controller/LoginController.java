@@ -1,8 +1,6 @@
 package com.example.papeleria_proyecto.controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -13,40 +11,31 @@ public class LoginController {
     private TextField txtUsuario;
 
     @FXML
-    private PasswordField txtContrasena;
+    private PasswordField txtPassword;
 
     @FXML
     private Label lblMensaje;
 
     @FXML
-    private void iniciarSesion(ActionEvent event) {
+    private void iniciarSesion() {
 
-        String usuario = txtUsuario.getText().trim();
-        String contrasena = txtContrasena.getText().trim();
+        String usuario = txtUsuario.getText();
+        String password = txtPassword.getText();
 
-        // Validar campos vacíos
-        if (usuario.isEmpty() || contrasena.isEmpty()) {
-            lblMensaje.setText("Complete todos los campos.");
-            return;
+        if(usuario.equals("admin") && password.equals("1234")){
+
+            lblMensaje.setStyle("-fx-text-fill:green;");
+            lblMensaje.setText("Bienvenido");
+
+            //Aquí se puede abrir la ventana principal
+
+        }else{
+
+            lblMensaje.setStyle("-fx-text-fill:red;");
+            lblMensaje.setText("Usuario o contraseña incorrectos");
+
         }
 
-        // Usuarios de prueba (luego se reemplazan por la BD)
-        if (usuario.equals("admin") && contrasena.equals("123456")) {
-            mostrarMensaje("Bienvenido Administrador");
-        } else if (usuario.equals("cliente") && contrasena.equals("123456")) {
-            mostrarMensaje("Bienvenido Cliente");
-        } else if (usuario.equals("reportes") && contrasena.equals("123456")) {
-            mostrarMensaje("Bienvenido Reportes");
-        } else {
-            lblMensaje.setText("Usuario o contraseña incorrectos.");
-        }
     }
 
-    private void mostrarMensaje(String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Inicio de sesión");
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
-    }
 }

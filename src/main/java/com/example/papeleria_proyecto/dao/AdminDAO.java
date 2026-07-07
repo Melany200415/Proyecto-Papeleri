@@ -1,5 +1,5 @@
 package com.example.papeleria_proyecto.dao;
 
-public class ProductoDAO {
+public class AdminDAO {
 
 }

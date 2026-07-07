@@ -1,5 +1,4 @@
 package com.example.papeleria_proyecto.controller;
 
-public class SalidaInventarioController {
-
+public class RegisterController {
 }
