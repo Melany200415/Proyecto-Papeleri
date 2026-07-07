@@ -1,0 +1,90 @@
+
+.root {
+    -fx-background-color: #F4F6F9;
+    -fx-font-family: "Segoe UI";
+}
+
+
+
+.vbox {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-padding: 30;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 15, 0, 0, 5);
+}
+
+
+
+.titulo {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1E3A5F;
+}
+
+
+
+.label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #555555;
+}
+
+
+
+.text-field,
+.password-field,
+.combo-box {
+
+    -fx-pref-height: 40;
+
+    -fx-background-color: white;
+
+    -fx-border-color: #D6DBDF;
+
+    -fx-border-radius: 8;
+
+    -fx-background-radius: 8;
+
+    -fx-font-size: 14px;
+
+    -fx-padding: 0 10 0 10;
+}
+
+
+
+.text-field:focused,
+.password-field:focused,
+.combo-box:focused {
+
+    -fx-border-color: #1565C0;
+
+    -fx-border-width: 2;
+}
+
+
+.button{
+
+    -fx-background-color:#1565C0;
+
+    -fx-text-fill:white;
+
+    -fx-font-size:15px;
+
+    -fx-font-weight:bold;
+
+    -fx-background-radius:8;
+
+    -fx-cursor:hand;
+}
+
+.button:hover{
+
+    -fx-background-color:#0D47A1;
+}
+
+
+.mensaje{
+
+    -fx-font-size:13px;
+
+    -fx-font-weight:bold;
+}

@@ -1,8 +1,7 @@
 package com.example.papeleria_proyecto.controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -13,40 +12,62 @@ public class LoginController {
     private TextField txtUsuario;
 
     @FXML
-    private PasswordField txtContrasena;
+    private PasswordField txtPassword;
+
+    @FXML
+    private ComboBox<String> cbRol;
 
     @FXML
     private Label lblMensaje;
 
     @FXML
-    private void iniciarSesion(ActionEvent event) {
+    public void initialize() {
 
-        String usuario = txtUsuario.getText().trim();
-        String contrasena = txtContrasena.getText().trim();
+        cbRol.getItems().addAll(
+                "Administrador",
+                "Cajero",
+                "Bodeguero"
+        );
+    }
 
-        // Validar campos vacíos
-        if (usuario.isEmpty() || contrasena.isEmpty()) {
-            lblMensaje.setText("Complete todos los campos.");
+    @FXML
+    private void iniciarSesion() {
+
+        String usuario = txtUsuario.getText();
+        String password = txtPassword.getText();
+        String rol = cbRol.getValue();
+
+        if (rol == null) {
+            lblMensaje.setStyle("-fx-text-fill:red;");
+            lblMensaje.setText("Seleccione un rol");
             return;
         }
 
-        // Usuarios de prueba (luego se reemplazan por la BD)
-        if (usuario.equals("admin") && contrasena.equals("123456")) {
-            mostrarMensaje("Bienvenido Administrador");
-        } else if (usuario.equals("cliente") && contrasena.equals("123456")) {
-            mostrarMensaje("Bienvenido Cliente");
-        } else if (usuario.equals("reportes") && contrasena.equals("123456")) {
-            mostrarMensaje("Bienvenido Reportes");
-        } else {
-            lblMensaje.setText("Usuario o contraseña incorrectos.");
-        }
-    }
+        if (usuario.equals("admin") &&
+                password.equals("1234") &&
+                rol.equals("Administrador")) {
 
-    private void mostrarMensaje(String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Inicio de sesión");
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
+            lblMensaje.setStyle("-fx-text-fill:green;");
+            lblMensaje.setText("Bienvenido Administrador");
+
+        } else if (usuario.equals("cajero") &&
+                password.equals("1234") &&
+                rol.equals("Cajero")) {
+
+            lblMensaje.setStyle("-fx-text-fill:green;");
+            lblMensaje.setText("Bienvenido Cajero");
+
+        } else if (usuario.equals("bodega") &&
+                password.equals("1234") &&
+                rol.equals("Bodeguero")) {
+
+            lblMensaje.setStyle("-fx-text-fill:green;");
+            lblMensaje.setText("Bienvenido Bodeguero");
+
+        } else {
+
+            lblMensaje.setStyle("-fx-text-fill:red;");
+            lblMensaje.setText("Datos incorrectos");
+        }
     }
 }
