@@ -43,7 +43,8 @@
 
             <ComboBox fx:id="cbRol"
                       promptText="Seleccione un rol"
-                      prefWidth="280"/>
+                      prefWidth="280" 
+                      styleClass="combo-personalizado"/>
 
             <Button text="Iniciar Sesión"
                     prefWidth="280"
