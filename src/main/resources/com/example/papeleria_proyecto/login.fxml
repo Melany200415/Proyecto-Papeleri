@@ -1,40 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.papeleria_proyecto.LoginController"
-            prefWidth="500"
-            prefHeight="350">
+            fx:controller="com.example.papeleria_proyecto.controller.LoginController"
+            prefWidth="600"
+            prefHeight="420"
+            stylesheets="@estilo_Login.css">
 
     <children>
 
-        <VBox spacing="15"
-              alignment="CENTER"
-              AnchorPane.topAnchor="30"
-              AnchorPane.bottomAnchor="30"
-              AnchorPane.leftAnchor="80"
-              AnchorPane.rightAnchor="80">
+        <VBox alignment="CENTER"
+              spacing="15"
+              AnchorPane.topAnchor="20"
+              AnchorPane.bottomAnchor="20"
+              AnchorPane.leftAnchor="100"
+              AnchorPane.rightAnchor="100">
 
-            <Label text="INICIO DE SESIÓN"
-                   style="-fx-font-size:22px; -fx-font-weight:bold;"/>
+            <ImageView fitWidth="80"
+                       fitHeight="80"
+                       preserveRatio="true">
+                <image>
+                    <Image url="@logo.png"/>
+                </image>
+            </ImageView>
+
+            <Label text="SISTEMA DE PAPELERÍA"
+                   styleClass="titulo"/>
+
+            <Label text="Inicio de Sesión"/>
 
             <TextField fx:id="txtUsuario"
                        promptText="Usuario"
-                       prefWidth="250"/>
+                       prefWidth="280"/>
 
             <PasswordField fx:id="txtPassword"
                            promptText="Contraseña"
-                           prefWidth="250"/>
+                           prefWidth="280"/>
+
+            <ComboBox fx:id="cbRol"
+                      promptText="Seleccione un rol"
+                      prefWidth="280"/>
 
             <Button text="Iniciar Sesión"
-                    prefWidth="250"
+                    prefWidth="280"
                     onAction="#iniciarSesion"/>
 
             <Label fx:id="lblMensaje"
-                   style="-fx-text-fill:red;"/>
+                   styleClass="mensaje"/>
 
         </VBox>
 
