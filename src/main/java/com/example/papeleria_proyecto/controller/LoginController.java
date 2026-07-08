@@ -1,10 +1,16 @@
 package com.example.papeleria_proyecto.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class LoginController {
 
@@ -70,4 +76,21 @@ public class LoginController {
             lblMensaje.setText("Usuario, contraseña o rol incorrectos");
         }
     }
+
+    @FXML
+    private void irARegistro() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/papeleria_proyecto/register.fxml"));
+
+            Stage stage = (Stage) txtUsuario.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            lblMensaje.setStyle("-fx-text-fill:red;");
+            lblMensaje.setText("Error al abrir ventana de registro");
+        }
+    }
+
+
 }

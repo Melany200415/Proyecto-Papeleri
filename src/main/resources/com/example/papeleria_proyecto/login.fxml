@@ -8,7 +8,7 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.papeleria_proyecto.controller.LoginController"
             prefWidth="600"
-            prefHeight="420"
+            prefHeight="450"
             stylesheets="@estilos.css">
 
     <children>
@@ -24,11 +24,9 @@
             <ImageView fitWidth="80"
                        fitHeight="80"
                        preserveRatio="true">
-
                 <image>
                     <Image url="@logo.png"/>
                 </image>
-
             </ImageView>
 
             <Label text="SISTEMA DE PAPELERÍA"
@@ -51,6 +49,11 @@
             <Button text="Iniciar Sesión"
                     prefWidth="280"
                     onAction="#iniciarSesion"/>
+
+            <Button text="¿No tienes cuenta? Regístrate aquí"
+                    prefWidth="280"
+                    style="-fx-background-color: transparent; -fx-text-fill: #0066cc; -fx-underline: true; -fx-cursor: hand;"
+                    onAction="#irARegistro"/>
 
             <Label fx:id="lblMensaje"
                    styleClass="mensaje"/>

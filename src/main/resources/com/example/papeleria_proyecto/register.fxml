@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.papeleria_proyecto.controller.RegisterController"
+            prefHeight="500.0" prefWidth="400.0"
+            stylesheets="@estilos.css">
+
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <VBox spacing="10" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
+        <Label text="Registro de Usuario" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+        <TextField fx:id="txtNombre" promptText="Nombre"/>
+        <TextField fx:id="txtApellido" promptText="Apellido"/>
+        <TextField fx:id="txtUsuario" promptText="Usuario"/>
+        <PasswordField fx:id="txtContrasena" promptText="Contraseña"/>
+        <TextField fx:id="txtTelefono" promptText="Teléfono"/>
+        <TextField fx:id="txtCorreo" promptText="Correo Electrónico"/>
+
+        <Label text="Rol:"/>
+        <ComboBox fx:id="cbRol" disable="true" maxWidth="Infinity"/>
+
+        <Button text="Registrar" onAction="#handleRegistrar" maxWidth="Infinity" style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
+        <Button text="Regresar al Login" onAction="#handleRegresar" maxWidth="Infinity"/>
+    </VBox>
+</AnchorPane>
