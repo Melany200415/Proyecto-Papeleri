@@ -9,12 +9,13 @@
             fx:controller="com.example.papeleria_proyecto.controller.LoginController"
             prefWidth="600"
             prefHeight="420"
-            stylesheets="@estilo_Login.css">
+            stylesheets="@estilos.css">
 
     <children>
 
         <VBox alignment="CENTER"
               spacing="15"
+              styleClass="vbox"
               AnchorPane.topAnchor="20"
               AnchorPane.bottomAnchor="20"
               AnchorPane.leftAnchor="100"
@@ -23,9 +24,11 @@
             <ImageView fitWidth="80"
                        fitHeight="80"
                        preserveRatio="true">
+
                 <image>
                     <Image url="@logo.png"/>
                 </image>
+
             </ImageView>
 
             <Label text="SISTEMA DE PAPELERÍA"
@@ -43,17 +46,11 @@
 
             <ComboBox fx:id="cbRol"
                       promptText="Seleccione un rol"
-                      prefWidth="280" 
-                      styleClass="combo-personalizado"/>
+                      prefWidth="280"/>
 
             <Button text="Iniciar Sesión"
                     prefWidth="280"
-                    onAction="#iniciarSesion"/>
-
-            <Label fx:id="lblMensaje"
-                   styleClass="mensaje"/>
-
-        </VBox>
+                    onAction="#iniciar </VBox>
 
     </children>
 
