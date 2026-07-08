@@ -1,43 +1,76 @@
 package com.example.papeleria_proyecto.controller;
 
-import javafx.event.ActionEvent;
+import com.example.papeleria_proyecto.conexion.Conexion;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class RegisterController {
 
     @FXML private TextField txtNombre, txtApellido, txtUsuario, txtTelefono, txtCorreo;
-    @FXML private PasswordField txtContrasena;
-    @FXML private ComboBox<String> cbRol;
+    @FXML private PasswordField txtPassword;
+    @FXML private Label lblMensaje;
 
     @FXML
-    public void initialize() {
-        cbRol.getItems().add("Cajero");
-        cbRol.getSelectionModel().select(0);
+    private void registrarUsuario() {
+        if (txtUsuario.getText().isEmpty() || txtPassword.getText().isEmpty()) {
+            lblMensaje.setStyle("-fx-text-fill: red;");
+            lblMensaje.setText("El usuario y contraseña son obligatorios.");
+            return;
+        }
+
+        String sql = "INSERT INTO usuarios (nombre, apellido, usuario, contrasena, telefono, correo, id_rol, estado) VALUES (?, ?, ?, ?, ?, ?, 2, 1)";
+
+        try (Connection conn = Conexion.getConexion();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, txtNombre.getText());
+            pstmt.setString(2, txtApellido.getText());
+            pstmt.setString(3, txtUsuario.getText());
+            pstmt.setString(4, txtPassword.getText()); // NOTA: Aquí deberías hashear la contraseña
+            pstmt.setString(5, txtTelefono.getText());
+            pstmt.setString(6, txtCorreo.getText());
+
+            int filasInsertadas = pstmt.executeUpdate();
+
+            if (filasInsertadas > 0) {
+                lblMensaje.setStyle("-fx-text-fill: green;");
+                lblMensaje.setText("Registro exitoso. ¡Bienvenido!");
+                limpiarCampos();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            lblMensaje.setStyle("-fx-text-fill: red;");
+            lblMensaje.setText("Error al guardar: " + e.getMessage());
+        }
+    }
+
+    private void limpiarCampos() {
+        txtNombre.clear();
+        txtApellido.clear();
+        txtUsuario.clear();
+        txtPassword.clear();
+        txtTelefono.clear();
+        txtCorreo.clear();
     }
 
     @FXML
-    private void handleRegistrar(ActionEvent event) {
-
-        String nombre = txtNombre.getText();
-        String usuario = txtUsuario.getText();
-
-        System.out.println("Registrando a: " + nombre + " con rol ID 2");
-    }
-
-    @FXML
-    private void handleRegresar(ActionEvent event) throws IOException {
-        Parent loginParent = FXMLLoader.load(getClass().getResource("/com/example/papeleria_proyecto/login.fxml"));
-        Scene loginScene = new Scene(loginParent);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(loginScene);
-        window.show();
+    private void volverAlLogin() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/papeleria_proyecto/login.fxml"));
+            Stage stage = (Stage) txtNombre.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
