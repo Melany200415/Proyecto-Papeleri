@@ -159,4 +159,5 @@ public class LoginController {
             lblMensaje.setText("Error al cargar la ventana de registro.");
         }
     }
+
 }
