@@ -12,16 +12,25 @@
 
 <AnchorPane prefHeight="420" prefWidth="600" stylesheets="@estilos.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/26" fx:controller="com.example.papeleria_proyecto.controller.LoginController">
 
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.papeleria_proyecto.controller.LoginController"
+            prefWidth="600"
+            prefHeight="450"
+            stylesheets="@estilos.css">
+
+
     <children>
 
         <VBox alignment="CENTER" spacing="15" styleClass="vbox" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="100" AnchorPane.rightAnchor="100" AnchorPane.topAnchor="20">
 
             <ImageView fitHeight="84.0" fitWidth="105.0" preserveRatio="true">
 
+            <ImageView fitWidth="80"
+                       fitHeight="80"
+                       preserveRatio="true">
                 <image>
                     <Image url="@logo.png" />
                 </image>
-
             </ImageView>
 
             <Label styleClass="titulo" text="SISTEMA DE PAPELERÍA" />
@@ -36,7 +45,15 @@
 
             <Button onAction="#iniciarSesion" prefWidth="280" text="Iniciar Sesión" />
 
+
             <Label fx:id="lblMensaje" styleClass="mensaje" />
+            <Button text="¿No tienes cuenta? Regístrate aquí"
+                    prefWidth="280"
+                    style="-fx-background-color: transparent; -fx-text-fill: #0066cc; -fx-underline: true; -fx-cursor: hand;"
+                    onAction="#irARegistro"/>
+
+            <Label fx:id="lblMensaje"
+                   styleClass="mensaje"/>
 
         </VBox>
 

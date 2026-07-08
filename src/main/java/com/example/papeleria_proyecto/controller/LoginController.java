@@ -2,16 +2,10 @@ package com.example.papeleria_proyecto.controller;
 
 import com.example.papeleria_proyecto.conexion.Conexion; 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 public class LoginController {
     @FXML private TextField txtUsuario;
@@ -160,4 +154,21 @@ public class LoginController {
             lblMensaje.setText("Error al cargar la ventana de registro.");
         }
     }
+
+    @FXML
+    private void irARegistro() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/papeleria_proyecto/register.fxml"));
+
+            Stage stage = (Stage) txtUsuario.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            lblMensaje.setStyle("-fx-text-fill:red;");
+            lblMensaje.setText("Error al abrir ventana de registro");
+        }
+    }
+
+
 }
