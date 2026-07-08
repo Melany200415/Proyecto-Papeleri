@@ -50,7 +50,12 @@
 
             <Button text="Iniciar Sesión"
                     prefWidth="280"
-                    onAction="#iniciar </VBox>
+                    onAction="#iniciarSesion"/>
+
+            <Label fx:id="lblMensaje"
+                   styleClass="mensaje"/>
+
+        </VBox>
 
     </children>
 
