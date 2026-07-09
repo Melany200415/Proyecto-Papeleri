@@ -1,5 +1,6 @@
 package com.example.papeleria_proyecto.controller;
 
+import com.example.papeleria_proyecto.dao.LoginDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,8 +12,11 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 
 public class LoginController {
+
+    private LoginDAO dao = new LoginDAO();
 
     @FXML
     private TextField txtUsuario;
@@ -34,63 +38,138 @@ public class LoginController {
                 "Cajero",
                 "Bodeguero"
         );
+
     }
 
     @FXML
     private void iniciarSesion() {
 
-        String usuario = txtUsuario.getText();
-        String password = txtPassword.getText();
-        String rol = cbRol.getValue();
+        String usuario = txtUsuario.getText().trim();
+        String password = txtPassword.getText().trim();
+        String rolSeleccionado = cbRol.getValue();
 
-        if (rol == null) {
+        if (usuario.isEmpty() || password.isEmpty() || rolSeleccionado == null) {
+
             lblMensaje.setStyle("-fx-text-fill:red;");
-            lblMensaje.setText("Seleccione un rol");
+            lblMensaje.setText("Complete todos los campos.");
             return;
+
         }
 
-        if (usuario.equals("admin")
-                && password.equals("1234")
-                && rol.equals("Administrador")) {
+        try {
 
-            lblMensaje.setStyle("-fx-text-fill:green;");
-            lblMensaje.setText("Bienvenido Administrador");
+            ResultSet rs = dao.iniciarSesion(usuario, password);
 
-        } else if (usuario.equals("cajero")
-                && password.equals("1234")
-                && rol.equals("Cajero")) {
+            if (rs != null && rs.next()) {
 
-            lblMensaje.setStyle("-fx-text-fill:green;");
-            lblMensaje.setText("Bienvenido Cajero");
+                String rolBD = rs.getString("rol");
 
-        } else if (usuario.equals("bodeguero")
-                && password.equals("1234")
-                && rol.equals("Bodeguero")) {
+                if (!rolBD.equalsIgnoreCase(rolSeleccionado)) {
 
-            lblMensaje.setStyle("-fx-text-fill:green;");
-            lblMensaje.setText("Bienvenido Bodeguero");
+                    lblMensaje.setStyle("-fx-text-fill:red;");
+                    lblMensaje.setText("El rol seleccionado no corresponde al usuario.");
+                    return;
 
-        } else {
+                }
+
+                lblMensaje.setStyle("-fx-text-fill:green;");
+                lblMensaje.setText("Bienvenido " + usuario);
+
+                abrirModulo(rolBD);
+
+            } else {
+
+                lblMensaje.setStyle("-fx-text-fill:red;");
+                lblMensaje.setText("Usuario o contraseña incorrectos.");
+
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
 
             lblMensaje.setStyle("-fx-text-fill:red;");
-            lblMensaje.setText("Usuario, contraseña o rol incorrectos");
+            lblMensaje.setText("Error al conectar con la base de datos.");
+
         }
+
+    }
+
+    private void abrirModulo(String rol) {
+
+        try {
+
+            String vista = "";
+
+            switch (rol.toLowerCase()) {
+
+                case "administrador":
+                    vista = "admin.fxml";
+                    break;
+
+                case "cajero":
+                    vista = "cajero.fxml";
+                    break;
+
+                case "bodeguero":
+                    vista = "bodeguero.fxml";
+                    break;
+
+                default:
+                    lblMensaje.setText("Rol no válido.");
+                    return;
+
+            }
+
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/example/papeleria_proyecto/" + vista)
+            );
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) txtUsuario.getScene().getWindow();
+
+            stage.setScene(new Scene(root));
+            stage.setTitle("Sistema de Papelería");
+            stage.show();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+            lblMensaje.setStyle("-fx-text-fill:red;");
+            lblMensaje.setText("No se pudo abrir el módulo.");
+
+        }
+
     }
 
     @FXML
     private void irARegistro() {
+
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/papeleria_proyecto/register.fxml"));
+
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/example/papeleria_proyecto/register.fxml")
+            );
+
+            Parent root = loader.load();
 
             Stage stage = (Stage) txtUsuario.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            lblMensaje.setStyle("-fx-text-fill:red;");
-            lblMensaje.setText("Error al abrir ventana de registro");
-        }
-    }
 
+            stage.setScene(new Scene(root));
+            stage.setTitle("Registro de Usuario");
+            stage.show();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+            lblMensaje.setStyle("-fx-text-fill:red;");
+            lblMensaje.setText("Error al abrir la ventana de registro.");
+
+        }
+
+    }
 
 }
