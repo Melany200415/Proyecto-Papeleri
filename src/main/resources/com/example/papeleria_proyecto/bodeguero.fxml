@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="720" prefWidth="1250" stylesheets="@estilos.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.papeleria_proyecto.controller.BodegueroController">
+
+
+    <top>
+
+        <VBox alignment="CENTER" spacing="10">
+
+            <padding>
+                <Insets bottom="15" top="15" />
+            </padding>
+
+            <ImageView fitHeight="90" fitWidth="90" preserveRatio="true">
+
+                <image>
+                    <Image url="@logo.png" />
+                </image>
+
+            </ImageView>
+
+            <Label styleClass="titulo" text="MÓDULO BODEGUERO" />
+
+            <Label text="Administración de Productos e Inventario" />
+
+        </VBox>
+
+    </top>
+
+    <left>
+
+        <VBox alignment="TOP_CENTER" prefWidth="220" spacing="15" styleClass="menu">
+
+            <padding>
+                <Insets left="15" right="15" top="20" />
+            </padding>
+
+            <Button onAction="#mostrarProductos" prefWidth="180" text="Productos" />
+
+            <Button onAction="#mostrarCategorias" prefWidth="180" text="Categorías" />
+
+            <Button onAction="#mostrarDetalleVentas" prefWidth="180" text="Detalle Ventas" />
+
+            <Button onAction="#mostrarMovimientos" prefWidth="180" text="Movimientos" />
+
+        </VBox>
+
+    </left>
+
+
+    <center>
+
+        <VBox spacing="20" styleClass="panel">
+
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="15" />
+            </padding>
+
+
+            <GridPane hgap="12" vgap="12">
+
+                <Label text="Código" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+
+                <TextField fx:id="txtCodigo" promptText="Código" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="Nombre" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+
+                <TextField fx:id="txtNombre" promptText="Nombre" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                <Label text="Precio" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+
+                <TextField fx:id="txtPrecio" promptText="Precio" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label text="Stock" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+                <TextField fx:id="txtStock" promptText="Stock" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                <Label text="Categoría" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+
+                <ComboBox fx:id="cbCategoria" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label text="Estado" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+
+                <ComboBox fx:id="cbEstado" prefWidth="200" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+
+                <Label text="Descripción" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+
+                <TextArea fx:id="txtDescripcion" prefRowCount="3" promptText="Descripción del producto" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+
+            </GridPane>
+
+
+
+            <HBox alignment="CENTER" spacing="15">
+
+                <Button onAction="#nuevo" text="Nuevo" />
+
+                <Button onAction="#guardar" text="Guardar" />
+
+                <Button onAction="#editar" text="Editar" />
+
+                <Button onAction="#eliminar" text="Eliminar" />
+
+                <Button onAction="#limpiar" text="Limpiar" />
+
+            </HBox>
+
+
+            <TableView fx:id="tblDatos" VBox.vgrow="ALWAYS">
+
+                <columns>
+
+                    <TableColumn fx:id="col1" prefWidth="120" text="Código" />
+
+                    <TableColumn fx:id="col2" prefWidth="175.0" text="Nombre" />
+
+                    <TableColumn fx:id="col3" prefWidth="233.0" text="Descripción" />
+
+                    <TableColumn fx:id="col4" prefWidth="129.0" text="Precio" />
+
+                    <TableColumn fx:id="col5" prefWidth="103.0" text="Stock" />
+
+                    <TableColumn fx:id="col6" prefWidth="99.0" text="Estado" />
+
+                    <TableColumn fx:id="col7" prefWidth="221.0" text="Categoría" />
+
+                </columns>
+
+            </TableView>
+
+        </VBox>
+
+    </center>
+
+</BorderPane>
