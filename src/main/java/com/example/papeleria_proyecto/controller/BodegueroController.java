@@ -2,9 +2,11 @@ package com.example.papeleria_proyecto.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import com.example.papeleria_proyecto.dao.BodegueroDAO;
+import java.sql.ResultSet;
 
 public class BodegueroController {
-
+    private final BodegueroDAO dao = new BodegueroDAO();
     @FXML
     private TextField txtCodigo;
 
@@ -65,9 +67,9 @@ public class BodegueroController {
                 "Arte"
         );
 
-        mostrarProductos();
-    }
+        cargarProductos();
 
+    }
 
 
     @FXML
@@ -83,7 +85,7 @@ public class BodegueroController {
 
         System.out.println("Tabla Productos");
 
-   
+
     }
 
     @FXML
@@ -154,7 +156,28 @@ public class BodegueroController {
         limpiar();
 
     }
+    private void cargarProductos() {
 
+        try {
+
+            ResultSet rs = dao.listarProductos();
+
+            while (rs.next()) {
+
+                System.out.println(
+                        rs.getString("codigo") + " - " +
+                                rs.getString("nombre")
+                );
+
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
     @FXML
     private void guardar() {
 
@@ -177,7 +200,7 @@ public class BodegueroController {
         alert.setContentText("Producto actualizado correctamente.");
         alert.showAndWait();
 
-        // bodegueroDAO.actualizarProducto(...);
+
 
     }
 
