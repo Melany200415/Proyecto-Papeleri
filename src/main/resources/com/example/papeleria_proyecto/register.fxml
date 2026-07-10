@@ -6,26 +6,69 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.papeleria_proyecto.controller.RegisterController"
-            stylesheets="@estilos.css">
+            stylesheets="@estilos.css"
+            styleClass="border-pane">
 
-    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 
-    <VBox spacing="10" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
-        <Label text="Registro de Usuario" styleClass="titulo"/>
+    <VBox spacing="12"
+          alignment="CENTER"
+          styleClass="register-card"
+          AnchorPane.topAnchor="30"
+          AnchorPane.bottomAnchor="30"
+          AnchorPane.leftAnchor="120"
+          AnchorPane.rightAnchor="120">
 
-        <TextField fx:id="txtNombre" promptText="Nombre"/>
-        <TextField fx:id="txtApellido" promptText="Apellido"/>
-        <TextField fx:id="txtUsuario" promptText="Usuario"/>
-        <PasswordField fx:id="txtPassword" promptText="Contraseña"/>
-        <TextField fx:id="txtTelefono" promptText="Teléfono"/>
-        <TextField fx:id="txtCorreo" promptText="Correo Electrónico"/>
+
+        <Label text="REGISTRO DE USUARIO"
+               styleClass="titulo"/>
+
+
+        <TextField fx:id="txtNombre"
+                   promptText="Nombre"/>
+
+
+        <TextField fx:id="txtApellido"
+                   promptText="Apellido"/>
+
+
+        <TextField fx:id="txtUsuario"
+                   promptText="Usuario"/>
+
+
+        <PasswordField fx:id="txtPassword"
+                       promptText="Contraseña"/>
+
+
+        <TextField fx:id="txtTelefono"
+                   promptText="Teléfono"/>
+
+
+        <TextField fx:id="txtCorreo"
+                   promptText="Correo Electrónico"/>
+
 
         <Label text="Rol asignado por defecto:"/>
-        <ComboBox fx:id="cbRol" disable="true" maxWidth="Infinity" value="Cajero"/>
 
-        <Button text="Registrar" onAction="#registrarUsuario" maxWidth="Infinity" styleClass="boton-verde"/>
-        <Button text="Regresar al Login" onAction="#volverAlLogin" maxWidth="Infinity"/>
 
-        <Label fx:id="lblMensaje" styleClass="mensaje"/>
+        <ComboBox fx:id="cbRol"
+                  disable="true"
+                  value="Cajero"/>
+
+
+        <Button text="Registrar"
+                onAction="#registrarUsuario"
+                styleClass="btn-guardar"/>
+
+
+        <Button text="Regresar al Login"
+                onAction="#volverAlLogin"/>
+
+
+        <Label fx:id="lblMensaje"
+               styleClass="mensaje"/>
+
+
     </VBox>
+
+
 </AnchorPane>
