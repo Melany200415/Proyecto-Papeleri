@@ -46,7 +46,6 @@ public class CategoriaDAO {
         }
     }
 
-    // Eliminación física; si tienes productos asociados, valida antes en el controller
     public boolean eliminar(int idCategoria) {
         String sql = "DELETE FROM categorias WHERE id_categoria = ?";
         try (Connection con = Conexion.getConexion();
