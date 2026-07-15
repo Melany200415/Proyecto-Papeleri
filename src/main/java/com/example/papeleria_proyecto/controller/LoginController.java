@@ -1,175 +1,163 @@
 package com.example.papeleria_proyecto.controller;
 
-import com.example.papeleria_proyecto.dao.LoginDAO;
+import com.example.papeleria_proyecto.conexion.Conexion;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
-
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class LoginController {
+    @FXML private TextField txtUsuario;
+    @FXML private PasswordField txtPassword;
+    @FXML private ComboBox<String> cbRol;
+    @FXML private Label lblMensaje;
 
-    private LoginDAO dao = new LoginDAO();
-
-    @FXML
-    private TextField txtUsuario;
-
-    @FXML
-    private PasswordField txtPassword;
-
-    @FXML
-    private ComboBox<String> cbRol;
-
-    @FXML
-    private Label lblMensaje;
+    private int intentosFallidos = 0;
+    private static final int MAX_INTENTOS = 3;
 
     @FXML
     public void initialize() {
-
-        cbRol.getItems().addAll(
-                "Administrador",
-                "Cajero",
-                "Bodeguero"
-        );
-
+        cbRol.getItems().addAll("Administrador", "Bodeguero", "Cajero");
     }
 
     @FXML
     private void iniciarSesion() {
-
-        String usuario = txtUsuario.getText().trim();
-        String password = txtPassword.getText().trim();
-        String rolSeleccionado = cbRol.getValue();
-
-        if (usuario.isEmpty() || password.isEmpty() || rolSeleccionado == null) {
-
-            lblMensaje.setStyle("-fx-text-fill:red;");
-            lblMensaje.setText("Complete todos los campos.");
+        if (intentosFallidos >= MAX_INTENTOS) {
+            lblMensaje.setText("Cuenta bloqueada. Intente más tarde.");
+            deshabilitarCampos();
             return;
-
         }
 
-        try {
+        String user = txtUsuario.getText().trim();
+        String pass = txtPassword.getText();
+        String rolSel = cbRol.getValue();
 
-            ResultSet rs = dao.iniciarSesion(usuario, password);
+        if (user.isEmpty() || pass.isEmpty() || rolSel == null) {
+            lblMensaje.setText("⚠️ Complete todos los campos.");
+            return;
+        }
 
-            if (rs != null && rs.next()) {
+        if (user.length() < 3) {
+            lblMensaje.setText("⚠️ Usuario inválido.");
+            return;
+        }
 
-                String rolBD = rs.getString("rol");
+        int idRolCombo = obtenerIdRolDesdeCombo(rolSel);
+        int idRolBD = getIdRolBD(user, pass);
 
-                if (!rolBD.equalsIgnoreCase(rolSeleccionado)) {
-
-                    lblMensaje.setStyle("-fx-text-fill:red;");
-                    lblMensaje.setText("El rol seleccionado no corresponde al usuario.");
-                    return;
-
-                }
-
-                lblMensaje.setStyle("-fx-text-fill:green;");
-                lblMensaje.setText("Bienvenido " + usuario);
-
-                abrirModulo(rolBD);
-
+        if (idRolBD != -1 && idRolBD == idRolCombo) {
+            lblMensaje.setText("✓ Acceso concedido...");
+            intentosFallidos = 0;
+            redirigirSegunIdRol(idRolBD);
+        } else {
+            intentosFallidos++;
+            int intentosRestantes = MAX_INTENTOS - intentosFallidos;
+            if (intentosRestantes > 0) {
+                lblMensaje.setText("Usuario, contraseña o rol incorrecto. (" + intentosRestantes + " intentos restantes)");
             } else {
-
-                lblMensaje.setStyle("-fx-text-fill:red;");
-                lblMensaje.setText("Usuario o contraseña incorrectos.");
-
+                lblMensaje.setText("Demasiados intentos fallidos. Intente más tarde.");
+                deshabilitarCampos();
             }
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-            lblMensaje.setStyle("-fx-text-fill:red;");
-            lblMensaje.setText("Error al conectar con la base de datos.");
-
         }
-
     }
 
-    private void abrirModulo(String rol) {
+    private int obtenerIdRolDesdeCombo(String rol) {
+        return switch (rol) {
+            case "Administrador" -> 1;
+            case "Cajero" -> 2;
+            case "Bodeguero" -> 3;
+            default -> -1;
+        };
+    }
+
+    private int getIdRolBD(String username, String password) {
+        String sql = "SELECT id_rol FROM usuarios WHERE usuario = ? AND contrasena = ?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
         try {
+            conn = Conexion.getConexion();
 
-            String vista = "";
-
-            switch (rol.toLowerCase()) {
-
-                case "administrador":
-                    vista = "admin.fxml";
-                    break;
-
-                case "cajero":
-                    vista = "cajero.fxml";
-                    break;
-
-                case "bodeguero":
-                    vista = "bodeguero.fxml";
-                    break;
-
-                default:
-                    lblMensaje.setText("Rol no válido.");
-                    return;
-
+            if (conn == null) {
+                System.err.println("Error: No se pudo conectar a la base de datos.");
+                lblMensaje.setText("Error de conexión con la base de datos.");
+                return -1;
             }
 
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/com/example/papeleria_proyecto/" + vista)
-            );
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
 
-            Parent root = loader.load();
+            rs = pstmt.executeQuery();
 
-            Stage stage = (Stage) txtUsuario.getScene().getWindow();
+            if (rs.next()) {
+                return rs.getInt("id_rol");
+            }
 
-            stage.setScene(new Scene(root));
-            stage.setTitle("Sistema de Papelería");
-            stage.show();
+        } catch (SQLException e) {
+            System.err.println("Error SQL en validación de credenciales: " + e.getMessage());
+            lblMensaje.setText("Error en la validación. Intente nuevamente.");
+        } catch (Exception e) {
+            System.err.println("Error inesperado: " + e.getMessage());
+            lblMensaje.setText("Error inesperado. Contacte al administrador.");
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.err.println("Error al cerrar recursos: " + e.getMessage());
+            }
+        }
+        return -1;
+    }
 
-        } catch (IOException e) {
+    private void redirigirSegunIdRol(int idRol) {
+        String fxmlFile = switch (idRol) {
+            case 1 -> "admin.fxml";
+            case 2 -> "cajero.fxml";
+            case 3 -> "bodeguero.fxml";
+            default -> "";
+        };
 
-            e.printStackTrace();
-
-            lblMensaje.setStyle("-fx-text-fill:red;");
-            lblMensaje.setText("No se pudo abrir el módulo.");
-
+        if (fxmlFile.isEmpty()) {
+            lblMensaje.setText("Rol inválido.");
+            return;
         }
 
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/papeleria_proyecto/" + fxmlFile));
+            Stage stage = (Stage) txtUsuario.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            System.err.println("Error al cargar interfaz: " + e.getMessage());
+            lblMensaje.setText(" Error al cargar la interfaz.");
+        }
+    }
+
+    private void deshabilitarCampos() {
+        txtUsuario.setDisable(true);
+        txtPassword.setDisable(true);
+        cbRol.setDisable(true);
     }
 
     @FXML
     private void irARegistro() {
-
         try {
-
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/com/example/papeleria_proyecto/register.fxml")
-            );
-
-            Parent root = loader.load();
-
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/papeleria_proyecto/register.fxml"));
             Stage stage = (Stage) txtUsuario.getScene().getWindow();
-
             stage.setScene(new Scene(root));
-            stage.setTitle("Registro de Usuario");
-            stage.show();
-
         } catch (IOException e) {
-
-            e.printStackTrace();
-
-            lblMensaje.setStyle("-fx-text-fill:red;");
-            lblMensaje.setText("Error al abrir la ventana de registro.");
-
+            System.err.println("Error al cargar registro: " + e.getMessage());
+            lblMensaje.setText("Error al cargar la ventana de registro.");
         }
-
     }
-
 }
