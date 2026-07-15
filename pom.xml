@@ -66,7 +66,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.example.papeleria_proyecto/com.example.papeleria_proyecto.HelloApplication
+                            <mainClass>com.example.papeleria_proyecto/com.example.papeleria_proyecto.app.HelloApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

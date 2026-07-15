@@ -1,6 +1,6 @@
 package com.example.papeleria_proyecto.controller;
 
-import com.example.papeleria_proyecto.conexion.Conexion;
+import com.example.papeleria_proyecto.db.Conexion;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -65,7 +65,7 @@ public class RegisterController {
     @FXML
     private void volverAlLogin() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/papeleria_proyecto/login.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/papeleria_proyecto/view/login.fxml"));
             Stage stage = (Stage) txtNombre.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();

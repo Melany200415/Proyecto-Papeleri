@@ -1,6 +1,6 @@
 package com.example.papeleria_proyecto.controller;
 
-import com.example.papeleria_proyecto.conexion.Conexion;
+import com.example.papeleria_proyecto.db.Conexion;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -134,12 +134,22 @@ public class LoginController {
         }
 
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/papeleria_proyecto/" + fxmlFile));
+
+            String ruta = "/com/example/papeleria_proyecto/view/" + fxmlFile;
+
+            System.out.println("Buscando: " + ruta);
+            System.out.println(getClass().getResource(ruta));
+
+            Parent root = FXMLLoader.load(
+                    getClass().getResource(ruta));
+
             Stage stage = (Stage) txtUsuario.getScene().getWindow();
             stage.setScene(new Scene(root));
+            stage.show();
+
         } catch (IOException e) {
-            System.err.println("Error al cargar interfaz: " + e.getMessage());
-            lblMensaje.setText(" Error al cargar la interfaz.");
+            e.printStackTrace();
+            lblMensaje.setText("Error al cargar la interfaz.");
         }
     }
 
@@ -152,7 +162,7 @@ public class LoginController {
     @FXML
     private void irARegistro() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/papeleria_proyecto/register.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/papeleria_proyecto/view/register.fxml"));
             Stage stage = (Stage) txtUsuario.getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (IOException e) {

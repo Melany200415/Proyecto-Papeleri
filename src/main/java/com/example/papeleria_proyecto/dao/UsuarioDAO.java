@@ -1,8 +1,8 @@
 package com.example.papeleria_proyecto.dao;
 
 
-import com.example.papeleria_proyecto.conexion.Conexion;
-import com.example.papeleria_proyecto.objetos.Usuario;
+import com.example.papeleria_proyecto.db.Conexion;
+import com.example.papeleria_proyecto.model.Usuario;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -96,9 +96,10 @@ public class UsuarioDAO {
                         rs.getInt("id_rol")
                 ));
             }
+            System.out.println(lista.size());
 
-        } catch (SQLException e) {
-            System.err.println("Error al listar usuarios: " + e.getMessage());
+        }catch(SQLException e){
+            e.printStackTrace();
         }
 
         return lista;

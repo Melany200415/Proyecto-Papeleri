@@ -1,8 +1,8 @@
 package com.example.papeleria_proyecto.dao;
 
 
-import com.example.papeleria_proyecto.conexion.Conexion;
-import com.example.papeleria_proyecto.objetos.Venta;
+import com.example.papeleria_proyecto.db.Conexion;
+import com.example.papeleria_proyecto.model.Venta;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

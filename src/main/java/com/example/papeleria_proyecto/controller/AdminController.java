@@ -6,10 +6,10 @@ import com.example.papeleria_proyecto.dao.CategoriaDAO;
 import com.example.papeleria_proyecto.dao.ProductoDAO;
 import com.example.papeleria_proyecto.dao.UsuarioDAO;
 import com.example.papeleria_proyecto.dao.VentaDAO;
-import com.example.papeleria_proyecto.objetos.Categoria;
-import com.example.papeleria_proyecto.objetos.Producto;
-import com.example.papeleria_proyecto.objetos.Usuario;
-import com.example.papeleria_proyecto.objetos.Venta;
+import com.example.papeleria_proyecto.model.Categoria;
+import com.example.papeleria_proyecto.model.Producto;
+import com.example.papeleria_proyecto.model.Usuario;
+import com.example.papeleria_proyecto.model.Venta;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -211,10 +211,19 @@ public class AdminController implements Initializable {
     // ===================== CAMBIO DE PANELES =====================
 
     private void ocultarTodos() {
+
         panelUsuarios.setVisible(false);
+        panelUsuarios.setManaged(false);
+
         panelProductos.setVisible(false);
+        panelProductos.setManaged(false);
+
         panelCategorias.setVisible(false);
+        panelCategorias.setManaged(false);
+
         panelVentas.setVisible(false);
+        panelVentas.setManaged(false);
+
     }
 
     private void actualizarEstado(Label etiqueta, String mensaje, boolean hayDatos) {
@@ -227,22 +236,35 @@ public class AdminController implements Initializable {
     @FXML
     private void mostrarUsuarios() {
         ocultarTodos();
+
         panelUsuarios.setVisible(true);
+        panelUsuarios.setManaged(true);
+
         mostrarTablaUsuarios();
     }
 
     @FXML
     private void mostrarProductos() {
+
         ocultarTodos();
+
         panelProductos.setVisible(true);
+        panelProductos.setManaged(true);
+
         mostrarTablaProductos();
+
     }
 
     @FXML
     private void mostrarCategorias() {
+
         ocultarTodos();
+
         panelCategorias.setVisible(true);
+        panelCategorias.setManaged(true);
+
         mostrarTablaCategorias();
+
     }
 
     @FXML
@@ -256,14 +278,15 @@ public class AdminController implements Initializable {
 
     @FXML
     private void mostrarTablaUsuarios() {
-        ObservableList<Usuario> datos = usuarioDAO.listarTodos();
-        usuariosFiltrados = new FilteredList<>(datos, u -> true);
-        tablaUsuarios.setItems(usuariosFiltrados);
-        tablaUsuarios.setPlaceholder(new Label("No hay usuarios registrados."));
-        aplicarFiltroUsuarios(txtBuscarUsuarios.getText());
-        actualizarEstado(lblEstadoUsuarios,
-                datos.isEmpty() ? "Sin registros en usuarios" : "Se cargaron " + datos.size() + " usuarios",
-                !datos.isEmpty());
+
+        ObservableList<Usuario> listaUsuarios =
+                usuarioDAO.listarTodos();
+
+        tablaUsuarios.setItems(listaUsuarios);
+
+        System.out.println("Usuarios encontrados: "
+                + listaUsuarios.size());
+
     }
 
     @FXML

@@ -1,4 +1,4 @@
-package com.example.papeleria_proyecto;
+package com.example.papeleria_proyecto.app;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +11,8 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource
+                ( "/com/example/papeleria_proyecto/view/login.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         
 

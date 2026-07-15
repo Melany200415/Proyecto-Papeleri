@@ -1,6 +1,6 @@
 package com.example.papeleria_proyecto;
 
-import com.example.papeleria_proyecto.conexion.Conexion;
+import com.example.papeleria_proyecto.db.Conexion;
 import java.sql.Connection;
 
 public class PruebaConexion {

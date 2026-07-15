@@ -15,7 +15,7 @@
             fx:controller="com.example.papeleria_proyecto.controller.LoginController"
             prefWidth="600"
             prefHeight="420"
-            stylesheets="@estilos.css">
+            stylesheets="@../css/estilos.css">
 
     <children>
 
@@ -31,7 +31,7 @@
                        fitHeight="80"
                        preserveRatio="true">
                 <image>
-                    <Image url="@logo.png"/>
+                    <Image url="@../images/logo.png"/>
                 </image>
             </ImageView>
 

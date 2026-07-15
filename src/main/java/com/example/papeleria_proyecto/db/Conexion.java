@@ -1,4 +1,4 @@
-package com.example.papeleria_proyecto.conexion;
+package com.example.papeleria_proyecto.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

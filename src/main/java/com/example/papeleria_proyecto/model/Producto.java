@@ -1,4 +1,4 @@
-package com.example.papeleria_proyecto.objetos;
+package com.example.papeleria_proyecto.model;
 
 import java.math.BigDecimal;
 

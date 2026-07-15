@@ -1,6 +1,6 @@
 package com.example.papeleria_proyecto.dao;
 
-import com.example.papeleria_proyecto.conexion.Conexion;
+import com.example.papeleria_proyecto.db.Conexion;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
