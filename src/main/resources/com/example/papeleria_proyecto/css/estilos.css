@@ -1,189 +1,12 @@
-.root {
-    -fx-background-color: linear-gradient(to bottom right, #E3F2FD, #BBDEFB);
-    -fx-font-family: "Segoe UI";
-}
 
-.vbox {
-    -fx-background-color: white;
-    -fx-background-radius: 20;
-    -fx-border-radius: 20;
-    -fx-padding: 35;
+.root{
 
-    -fx-effect: dropshadow(gaussian,
-    rgba(0,0,0,0.25),
-    20,
-    0.2,
-    0,
-    8);
-}
+    -fx-background-color:
+            linear-gradient(to bottom right,#E3F2FD,#BBDEFB);
 
-.titulo {
-    -fx-font-size: 28px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #0D47A1;
-}
-
-.label {
-    -fx-font-size: 14px;
-    -fx-text-fill: #455A64;
-}
-
-.text-field,
-.password-field,
-.combo-box {
-
-    -fx-pref-height: 42;
-    -fx-background-color: #F8F9FA;
-    -fx-border-color: #D0D7DE;
-    -fx-border-radius: 10;
-    -fx-background-radius: 10;
-    -fx-padding: 0 12 0 12;
-    -fx-font-size: 14px;
-}
-
-.text-field:focused,
-.password-field:focused,
-.combo-box:focused {
-
-    -fx-border-color: #1976D2;
-    -fx-border-width: 2;
-    -fx-background-color: white;
-}
-
-.button {
-
-    -fx-background-color: #1976D2;
-    -fx-text-fill: white;
-    -fx-font-size: 15px;
-    -fx-font-weight: bold;
-    -fx-background-radius: 12;
-    -fx-pref-height: 42;
-    -fx-cursor: hand;
-}
-
-.button:hover {
-
-    -fx-background-color: #1565C0;
-}
-
-.mensaje {
-
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-}
-
-.combo-box .list-cell {
-    -fx-font-size: 14px;
-    -fx-padding: 5 10 5 10;
-}
-
-.border-pane{
-
-    -fx-background-color: linear-gradient(to bottom right,#E3F2FD,#BBDEFB);
+    -fx-font-family:"Segoe UI";
 
 }
-
-.menu{
-
-    -fx-background-color:white;
-    -fx-background-radius:20;
-    -fx-border-radius:20;
-
-    -fx-effect:dropshadow(gaussian,
-    rgba(0,0,0,.20),
-    12,
-    .2,
-    0,
-    3);
-}
-
-
-
-.panel{
-
-    -fx-background-color:white;
-
-    -fx-background-radius:20;
-
-    -fx-padding:20;
-
-    -fx-effect:dropshadow(gaussian,
-    rgba(0,0,0,.18),
-    18,
-    .2,
-    0,
-    4);
-}
-
-
-
-.grid-pane{
-
-    -fx-hgap:12;
-    -fx-vgap:12;
-}
-
-
-
-.text-area{
-
-    -fx-background-radius:10;
-    -fx-border-radius:10;
-    -fx-border-color:#D0D7DE;
-    -fx-font-size:14;
-}
-
-.text-area:focused{
-
-    -fx-border-color:#1976D2;
-    -fx-border-width:2;
-}
-
-/* Tabla */
-
-.table-view{
-
-    -fx-background-radius:15;
-    -fx-border-radius:15;
-    -fx-border-color:#C5D5E8;
-}
-
-.table-view .column-header-background{
-
-    -fx-background-color:#1976D2;
-
-}
-
-.table-view .column-header{
-
-    -fx-background-color:#1976D2;
-
-}
-
-.table-view .column-header .label{
-
-    -fx-text-fill:white;
-    -fx-font-weight:bold;
-}
-
-.table-row-cell{
-
-    -fx-cell-size:32;
-}
-
-.table-row-cell:selected{
-
-    -fx-background-color:#BBDEFB;
-}
-
-
-
-.menu .button{
-
-    -fx-pref-width:180;
-    -fx-pref-height:40;
-}
-/*  Bodeguero*/
 
 
 .border-pane{
@@ -192,6 +15,418 @@
             linear-gradient(to bottom right,#E3F2FD,#BBDEFB);
 
 }
+
+
+.label{
+
+    -fx-font-size:14px;
+
+    -fx-text-fill:#455A64;
+
+}
+
+
+/* CAMPOS */
+
+.text-field,
+.password-field,
+.combo-box{
+
+    -fx-pref-height:42;
+
+    -fx-background-color:#F8F9FA;
+
+    -fx-border-color:#D0D7DE;
+
+    -fx-border-radius:10;
+
+    -fx-background-radius:10;
+
+    -fx-padding:0 12 0 12;
+
+    -fx-font-size:14px;
+
+}
+
+
+.text-field:focused,
+.password-field:focused,
+.combo-box:focused{
+
+    -fx-border-color:#1976D2;
+
+    -fx-border-width:2;
+
+    -fx-background-color:white;
+
+}
+
+
+/* BOTONES GENERALES */
+
+.button{
+
+    -fx-background-color:#1976D2;
+
+    -fx-text-fill:white;
+
+    -fx-font-size:15px;
+
+    -fx-font-weight:bold;
+
+    -fx-background-radius:12;
+
+    -fx-pref-height:42;
+
+    -fx-cursor:hand;
+
+}
+
+
+.button:hover{
+
+    -fx-background-color:#1565C0;
+
+}
+
+
+/* TABLAS */
+
+.table-view{
+
+    -fx-background-color:white;
+
+    -fx-background-radius:15;
+
+    -fx-border-radius:15;
+
+    -fx-border-color:#D0D7DE;
+
+}
+
+
+.table-view .column-header{
+
+    -fx-background-color:#1976D2;
+
+}
+
+
+.table-view .column-header-background{
+
+    -fx-background-color:#1976D2;
+
+}
+
+
+.table-view .column-header .label{
+
+    -fx-text-fill:white;
+
+    -fx-font-weight:bold;
+
+    -fx-font-size:14px;
+
+}
+
+
+.table-row-cell{
+
+    -fx-cell-size:32;
+
+}
+
+
+.table-row-cell:hover{
+
+    -fx-background-color:#E3F2FD;
+
+}
+
+
+.table-row-cell:selected{
+
+    -fx-background-color:#BBDEFB;
+
+}
+
+
+
+/************************************************/
+/*                   LOGIN                      */
+/************************************************/
+
+
+.vbox{
+
+    -fx-background-color:white;
+
+    -fx-background-radius:20;
+
+    -fx-border-radius:20;
+
+    -fx-padding:35;
+
+    -fx-effect:dropshadow(
+            gaussian,
+            rgba(0,0,0,.25),
+            20,
+            .2,
+            0,
+            8
+    );
+
+}
+
+
+.titulo{
+
+    -fx-font-size:28px;
+
+    -fx-font-weight:bold;
+
+    -fx-text-fill:#0D47A1;
+
+}
+
+
+.mensaje{
+
+    -fx-font-size:13px;
+
+    -fx-font-weight:bold;
+
+}
+
+
+.link-button{
+
+    -fx-background-color:transparent;
+
+    -fx-text-fill:#1976D2;
+
+    -fx-underline:true;
+
+    -fx-cursor:hand;
+
+}
+
+
+.link-button:hover{
+
+    -fx-text-fill:#1565C0;
+
+}
+
+
+
+/************************************************/
+/*                  REGISTER                    */
+/************************************************/
+
+
+.register-card{
+
+    -fx-background-color:white;
+
+    -fx-background-radius:22;
+
+    -fx-padding:35;
+
+    -fx-effect:dropshadow(
+            gaussian,
+            rgba(0,0,0,.18),
+            18,
+            .2,
+            0,
+            5
+    );
+
+}
+
+
+.register-title{
+
+    -fx-font-size:28px;
+
+    -fx-font-weight:bold;
+
+    -fx-text-fill:#0D47A1;
+
+}
+
+
+.register-card .text-field,
+.register-card .password-field,
+.register-card .combo-box{
+
+    -fx-pref-height:42;
+
+}
+
+
+
+/************************************************/
+/*                    ADMIN                     */
+/************************************************/
+
+
+.admin-menu{
+
+    -fx-background-color:#1976D2;
+
+}
+
+
+.admin-title{
+
+    -fx-text-fill:white;
+
+    -fx-font-size:18px;
+
+    -fx-font-weight:bold;
+
+}
+
+
+.admin-panel{
+
+    -fx-background-color:white;
+
+    -fx-background-radius:20;
+
+    -fx-padding:20;
+
+}
+
+
+.admin-subtitle{
+
+    -fx-font-size:18px;
+
+    -fx-font-weight:bold;
+
+    -fx-text-fill:#0D47A1;
+
+}
+
+
+.estado-label{
+
+    -fx-font-weight:bold;
+
+    -fx-text-fill:#455A64;
+
+}
+
+
+
+/************************************************/
+/*                   CAJERO                     */
+/************************************************/
+
+
+.cajero-title{
+
+    -fx-font-size:32px;
+
+    -fx-font-weight:bold;
+
+    -fx-text-fill:#0D47A1;
+
+}
+
+
+.cajero-subtitle{
+
+    -fx-font-size:15px;
+
+    -fx-text-fill:#455A64;
+
+}
+
+
+.cajero-panel{
+
+    -fx-background-color:white;
+
+    -fx-background-radius:22;
+
+    -fx-border-radius:22;
+
+    -fx-border-color:#D0D7DE;
+
+    -fx-padding:25;
+
+    -fx-effect:dropshadow(
+            gaussian,
+            rgba(0,0,0,.18),
+            18,
+            .2,
+            0,
+            5
+    );
+
+}
+
+
+.spinner{
+
+    -fx-pref-height:40;
+
+}
+
+
+.spinner .text-field{
+
+    -fx-alignment:center;
+
+}
+
+
+.titulo-tabla{
+
+    -fx-font-size:18px;
+
+    -fx-font-weight:bold;
+
+    -fx-text-fill:#0D47A1;
+
+}
+
+
+/* BOTON COBRAR */
+
+.btn-cobrar{
+
+    -fx-background-color:#16A34A;
+
+    -fx-text-fill:white;
+
+    -fx-font-size:14px;
+
+    -fx-font-weight:bold;
+
+    -fx-pref-width:115;
+
+    -fx-pref-height:40;
+
+    -fx-background-radius:10;
+
+}
+
+
+.btn-cobrar:hover{
+
+    -fx-background-color:#15803D;
+
+}
+
+
+
+/************************************************/
+/*                 BODEGUERO                    */
+/************************************************/
 
 
 .bodega-title{
@@ -212,6 +447,7 @@
     -fx-text-fill:#455A64;
 
 }
+
 
 .bodega-menu{
 
@@ -235,7 +471,6 @@
 }
 
 
-
 .bodega-menu .button{
 
     -fx-background-color:transparent;
@@ -255,12 +490,12 @@
 }
 
 
-
 .bodega-menu .button:hover{
 
     -fx-background-color:#1565C0;
 
 }
+
 
 .bodega-panel{
 
@@ -271,8 +506,6 @@
     -fx-border-radius:22;
 
     -fx-border-color:#D0D7DE;
-
-    -fx-border-width:1;
 
     -fx-padding:25;
 
@@ -286,97 +519,6 @@
     );
 
 }
-
-
-.bodega-panel .text-field,
-.bodega-panel .combo-box,
-.bodega-panel .text-area{
-
-
-    -fx-background-color:#F8F9FA;
-
-    -fx-border-color:#D0D7DE;
-
-    -fx-background-radius:10;
-
-    -fx-border-radius:10;
-
-    -fx-font-size:14px;
-
-}
-
-
-
-.bodega-panel .text-field:focused,
-.bodega-panel .combo-box:focused,
-.bodega-panel .text-area:focused{
-
-
-    -fx-border-color:#1976D2;
-
-    -fx-border-width:2;
-
-}
-
-
-.btn-nuevo,
-.btn-guardar,
-.btn-editar,
-.btn-eliminar,
-.btn-limpiar{
-
-
-    -fx-text-fill:white;
-
-    -fx-font-size:14px;
-
-    -fx-font-weight:bold;
-
-    -fx-pref-width:115;
-
-    -fx-pref-height:40;
-
-    -fx-background-radius:10;
-
-}
-
-
-
-.btn-nuevo{
-
-    -fx-background-color:#1976D2;
-
-}
-
-
-.btn-guardar{
-
-    -fx-background-color:#1976D2;
-
-}
-
-
-.btn-editar{
-
-    -fx-background-color:#1565C0;
-
-}
-
-
-.btn-eliminar{
-
-    -fx-background-color:#0D47A1;
-
-}
-
-
-.btn-limpiar{
-
-    -fx-background-color:#607D8B;
-
-}
-
-
 
 
 .bodega-table{
@@ -393,47 +535,11 @@
 
 
 
-.bodega-table .column-header{
-
-    -fx-background-color:#1976D2;
-
-}
+/************************************************/
+/*            BOTONES DEL SISTEMA               */
+/************************************************/
 
 
-
-.bodega-table .column-header-background{
-
-    -fx-background-color:#1976D2;
-
-}
-
-
-
-.bodega-table .column-header .label{
-
-    -fx-text-fill:white;
-
-    -fx-font-size:14px;
-
-    -fx-font-weight:bold;
-
-}
-
-
-
-.bodega-table .table-row-cell:hover{
-
-    -fx-background-color:#E3F2FD;
-
-}
-
-
-
-.bodega-table .table-row-cell:selected{
-
-    -fx-background-color:#BBDEFB;
-
-}
 .btn-nuevo,
 .btn-guardar,
 .btn-editar,
@@ -446,15 +552,18 @@
 
     -fx-font-weight:bold;
 
-    -fx-pref-width:115px;
+    -fx-pref-width:115;
 
-    -fx-pref-height:40px;
+    -fx-pref-height:40;
 
-    -fx-background-radius:10px;
+    -fx-background-radius:10;
 
     -fx-cursor:hand;
 
 }
+
+
+/* NUEVO */
 
 .btn-nuevo{
 
@@ -470,6 +579,8 @@
 }
 
 
+/* GUARDAR */
+
 .btn-guardar{
 
     -fx-background-color:#16A34A;
@@ -482,6 +593,9 @@
     -fx-background-color:#15803D;
 
 }
+
+
+/* EDITAR */
 
 .btn-editar{
 
@@ -496,6 +610,9 @@
 
 }
 
+
+/* ELIMINAR */
+
 .btn-eliminar{
 
     -fx-background-color:#DC2626;
@@ -509,6 +626,9 @@
 
 }
 
+
+/* LIMPIAR */
+
 .btn-limpiar{
 
     -fx-background-color:#64748B;
@@ -519,81 +639,5 @@
 .btn-limpiar:hover{
 
     -fx-background-color:#475569;
-
-}
-/*
-        REGISTRO*/
-
-
-.register-card{
-
-    -fx-background-color:white;
-
-    -fx-background-radius:22;
-
-    -fx-padding:35;
-
-    -fx-effect:dropshadow(
-            gaussian,
-            rgba(0,0,0,.18),
-            18,
-            .2,
-            0,
-            5
-    );
-
-}
-
-
-
-.register-card .text-field,
-.register-card .password-field,
-.register-card .combo-box{
-
-    -fx-pref-height:42;
-
-    -fx-background-color:#F8F9FA;
-
-    -fx-border-color:#D0D7DE;
-
-    -fx-border-radius:10;
-
-    -fx-background-radius:10;
-
-    -fx-font-size:14px;
-
-}
-
-
-.register-card .text-field:focused,
-.register-card .password-field:focused,
-.register-card .combo-box:focused{
-
-    -fx-border-color:#1976D2;
-
-    -fx-border-width:2;
-
-}
-
-
-.register-card .button{
-
-    -fx-pref-height:42;
-
-    -fx-background-radius:10;
-
-}
-
-
-.btn-guardar{
-
-    -fx-background-color:#16A34A;
-
-}
-
-
-.btn-guardar:hover{
-
-    -fx-background-color:#15803D;
 
 }

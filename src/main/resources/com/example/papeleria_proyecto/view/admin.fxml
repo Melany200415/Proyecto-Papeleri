@@ -1,122 +1,595 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="650.0" prefWidth="1158.0" styleClass="border-pane" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.papeleria_proyecto.controller.AdminController">
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.PasswordField?>
+<BorderPane prefHeight="650.0"
+            prefWidth="1158.0"
+            styleClass="border-pane"
+            stylesheets="@../css/estilos.css"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.papeleria_proyecto.controller.AdminController">
 
+    <!-- MENÚ LATERAL -->
     <left>
-        <VBox prefWidth="180" spacing="10" style="-fx-background-color:#2c3e50;">
-            <padding><Insets bottom="20" left="10" right="10" top="20" /></padding>
 
-            <Label style="-fx-text-fill:white; -fx-font-size:16; -fx-font-weight:bold;" text="PANEL ADMIN" />
+        <VBox prefWidth="180"
+              spacing="10"
+              style="-fx-background-color:#2c3e50;">
 
-            <Button fx:id="btnUsuarios" maxWidth="Infinity" onAction="#mostrarUsuarios" text="Usuarios" />
-            <Button fx:id="btnProductos" maxWidth="Infinity" onAction="#mostrarProductos" text="Productos" />
-            <Button fx:id="btnCategorias" maxWidth="Infinity" onAction="#mostrarCategorias" text="Categorías" />
-            <Button fx:id="btnVentas" maxWidth="Infinity" onAction="#mostrarVentas" text="Ventas" />
+            <padding>
+                <Insets bottom="20"
+                        left="10"
+                        right="10"
+                        top="20"/>
+            </padding>
+
+            <Label text="PANEL ADMIN"
+                   style="-fx-text-fill:white;
+                          -fx-font-size:16;
+                          -fx-font-weight:bold;"/>
+
+            <Button text="Usuarios"
+                    maxWidth="Infinity"
+                    onAction="#mostrarUsuarios"/>
+
+            <Button text="Productos"
+                    maxWidth="Infinity"
+                    onAction="#mostrarProductos"/>
+
+            <Button text="Categorías"
+                    maxWidth="Infinity"
+                    onAction="#mostrarCategorias"/>
+
+            <Button text="Proveedores"
+                    maxWidth="Infinity"
+                    onAction="#mostrarProveedores"/>
+
+            <Button text="Ventas"
+                    maxWidth="Infinity"
+                    onAction="#mostrarVentas"/>
+
+            <Button text="Reportes"
+                    maxWidth="Infinity"
+                    onAction="#mostrarReportes"/>
+
+            <VBox VBox.vgrow="ALWAYS"/>
+
+            <Button text="Cerrar sesión"
+                    maxWidth="Infinity"
+                    onAction="#cerrarSesion"/>
 
         </VBox>
+
     </left>
 
+    <!-- CONTENIDO -->
     <center>
+
         <StackPane fx:id="contenedorTablas">
-            <padding><Insets bottom="15" left="15" right="15" top="15" /></padding>
 
+            <padding>
+                <Insets bottom="15"
+                        left="15"
+                        right="15"
+                        top="15"/>
+            </padding>
 
-            <VBox fx:id="panelUsuarios" spacing="10" visible="true">
-                <HBox alignment="CENTER_LEFT" spacing="10">
-                    <Label style="-fx-font-size:18; -fx-font-weight:bold;" text="Gestión de Usuarios" />
-                    <Button onAction="#mostrarTablaUsuarios" text="Mostrar" />
-                    <Button onAction="#nuevoUsuario" text="Nuevo" />
-                    <Button onAction="#editarUsuario" text="Editar" />
-                    <Button onAction="#eliminarUsuario" text="Eliminar" />
-                    <Label fx:id="lblEstadoUsuarios" style="-fx-font-weight:bold;" text="Esperando datos..." />
-                    <TextField fx:id="txtBuscarUsuarios" promptText="Buscar por nombre, usuario o correo" HBox.hgrow="ALWAYS" />
-                    <Button onAction="#buscarUsuarios" text="Buscar" />
+            <!-- ================= USUARIOS ================= -->
+
+            <VBox fx:id="panelUsuarios"
+                  spacing="10"
+                  visible="true">
+
+                <HBox alignment="CENTER_LEFT"
+                      spacing="10">
+
+                    <Label text="Gestión de Usuarios"
+                           style="-fx-font-size:18;
+                      -fx-font-weight:bold;"/>
+
+                    <Button text="Mostrar"
+                            onAction="#mostrarTablaUsuarios"/>
+
+                    <Button text="Nuevo"
+                            onAction="#nuevoUsuario"/>
+
+                    <Button text="Editar"
+                            onAction="#editarUsuario"/>
+
+                    <Button text="Eliminar"
+                            onAction="#eliminarUsuario"/>
+
+                    <TextField fx:id="txtBuscarUsuarios"
+                               promptText="Buscar por nombre, usuario o correo"
+                               HBox.hgrow="ALWAYS"/>
+
+                    <Button text="Buscar"
+                            onAction="#buscarUsuarios"/>
+
                 </HBox>
-                <TableView fx:id="tablaUsuarios" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="colIdUsuario" prefWidth="50" text="ID" />
-                        <TableColumn fx:id="colNombreUsuario" prefWidth="145.0" text="Nombre" />
-                        <TableColumn fx:id="colApellidoUsuario" prefWidth="113.0" text="Apellido" />
-                        <TableColumn fx:id="colUsuario" prefWidth="102.0" text="Usuario" />
-                        <TableColumn fx:id="colTelefono" prefWidth="99.0" text="Teléfono" />
-                        <TableColumn fx:id="colCorreo" prefWidth="134.0" text="Correo" />
-                        <TableColumn fx:id="colEstadoUsuario" prefWidth="91.0" text="Estado" />
-                        <TableColumn fx:id="colIdRol" prefWidth="128.0" text="Rol" />
-                    </columns>
-                </TableView>
+
+
+                <HBox spacing="15"
+                      VBox.vgrow="ALWAYS">
+
+                    <!-- TABLA DE USUARIOS              -->
+                    <TableView fx:id="tablaUsuarios"
+                               prefWidth="650"
+                               HBox.hgrow="ALWAYS">
+
+                        <columns>
+
+                            <TableColumn fx:id="colIdUsuario"
+                                         text="ID"
+                                         prefWidth="50"/>
+
+                            <TableColumn fx:id="colNombreUsuario"
+                                         text="Nombre"
+                                         prefWidth="120"/>
+
+                            <TableColumn fx:id="colApellidoUsuario"
+                                         text="Apellido"
+                                         prefWidth="120"/>
+
+                            <TableColumn fx:id="colUsuario"
+                                         text="Usuario"
+                                         prefWidth="100"/>
+
+                            <TableColumn fx:id="colTelefono"
+                                         text="Teléfono"
+                                         prefWidth="100"/>
+
+                            <TableColumn fx:id="colCorreo"
+                                         text="Correo"
+                                         prefWidth="150"/>
+
+                            <TableColumn fx:id="colEstadoUsuario"
+                                         text="Estado"
+                                         prefWidth="90"/>
+
+                            <TableColumn fx:id="colIdRol"
+                                         text="Rol"
+                                         prefWidth="100"/>
+
+                        </columns>
+
+                    </TableView>
+
+                    <!-- FORMULARIO USUARIO             -->
+                    <VBox fx:id="panelFormularioUsuario"
+                          prefWidth="320"
+                          spacing="10"
+                          visible="false"
+                          managed="false">
+
+                        <Label fx:id="lblTituloFormulario"
+                               text="Nuevo Usuario"
+                               style="-fx-font-size:18;
+                          -fx-font-weight:bold;"/>
+
+
+                        <TextField fx:id="txtNombre"
+                                   promptText="Nombre"/>
+
+
+                        <TextField fx:id="txtApellido"
+                                   promptText="Apellido"/>
+
+
+                        <TextField fx:id="txtUsuario"
+                                   promptText="Usuario"/>
+
+
+                        <PasswordField fx:id="txtContrasena"
+                                       promptText="Contraseña"/>
+
+
+                        <TextField fx:id="txtTelefono"
+                                   promptText="Teléfono"/>
+
+
+                        <TextField fx:id="txtCorreo"
+                                   promptText="Correo"/>
+
+
+                        <ComboBox fx:id="cmbRol"
+                                  promptText="Seleccione el rol"
+                                  maxWidth="Infinity"/>
+
+
+                        <ComboBox fx:id="cmbEstado"
+                                  promptText="Seleccione el estado"
+                                  maxWidth="Infinity"/>
+
+
+                        <HBox spacing="10">
+
+                            <Button text="Guardar"
+                                    onAction="#guardarUsuario"/>
+
+                            <Button text="Cancelar"
+                                    onAction="#cancelarFormularioUsuario"/>
+
+                        </HBox>
+
+                    </VBox>
+
+                </HBox>
+
             </VBox>
 
-            <VBox fx:id="panelProductos" spacing="10" visible="false">
-                <HBox alignment="CENTER_LEFT" spacing="10">
-                    <Label style="-fx-font-size:18; -fx-font-weight:bold;" text="Gestión de Productos" />
-                    <Button onAction="#mostrarTablaProductos" text="Mostrar" />
-                    <Button onAction="#nuevoProducto" text="Nuevo" />
-                    <Button onAction="#editarProducto" text="Editar" />
-                    <Button onAction="#eliminarProducto" text="Eliminar" />
-                    <Label fx:id="lblEstadoProductos" style="-fx-font-weight:bold;" text="Esperando datos..." />
-                    <TextField fx:id="txtBuscarProductos" promptText="Buscar por código o nombre" HBox.hgrow="ALWAYS" />
-                    <Button onAction="#buscarProductos" text="Buscar" />
+            <!-- ================= PRODUCTOS ================= -->
+
+            <VBox fx:id="panelProductos"
+                  spacing="10"
+                  visible="false">
+
+                <!-- CABECERA -->
+
+                <HBox alignment="CENTER_LEFT"
+                      spacing="10">
+
+                    <Label text="Gestión de Productos"
+                           style="-fx-font-size:18;
+                      -fx-font-weight:bold;"/>
+
+                    <Button text="Mostrar"
+                            onAction="#mostrarTablaProductos"/>
+
+                    <Button text="Nuevo"
+                            onAction="#nuevoProducto"/>
+
+                    <Button text="Editar"
+                            onAction="#editarProducto"/>
+
+                    <Button text="Eliminar"
+                            onAction="#eliminarProducto"/>
+
+                    <TextField fx:id="txtBuscarProductos"
+                               promptText="Buscar por código o nombre"
+                               HBox.hgrow="ALWAYS"/>
+
+                    <Button text="Buscar"
+                            onAction="#buscarProductos"/>
+
                 </HBox>
-                <TableView fx:id="tablaProductos" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="colIdProducto" prefWidth="50" text="ID" />
-                        <TableColumn fx:id="colCodigo" prefWidth="90" text="Código" />
-                        <TableColumn fx:id="colNombreProducto" prefWidth="130" text="Nombre" />
-                        <TableColumn fx:id="colDescripcion" prefWidth="150" text="Descripción" />
-                        <TableColumn fx:id="colPrecio" prefWidth="80" text="Precio" />
-                        <TableColumn fx:id="colStock" prefWidth="70" text="Stock" />
-                        <TableColumn fx:id="colEstadoProducto" prefWidth="70" text="Estado" />
-                        <TableColumn fx:id="colIdCategoria" prefWidth="90" text="Categoría" />
-                    </columns>
-                </TableView>
+
+
+                <!-- TABLA Y FORMULARIO -->
+
+                <HBox spacing="15"
+                      VBox.vgrow="ALWAYS">
+
+
+                    <!-- TABLA DE PRODUCTOS -->
+
+                    <TableView fx:id="tablaProductos"
+                               prefWidth="650"
+                               HBox.hgrow="ALWAYS">
+
+                        <columns>
+
+                            <TableColumn fx:id="colIdProducto"
+                                         text="ID"
+                                         prefWidth="50"/>
+
+                            <TableColumn fx:id="colCodigoProducto"
+                                         text="Código"
+                                         prefWidth="90"/>
+
+                            <TableColumn fx:id="colNombreProducto"
+                                         text="Nombre"
+                                         prefWidth="130"/>
+
+                            <TableColumn fx:id="colDescripcionProducto"
+                                         text="Descripción"
+                                         prefWidth="150"/>
+
+                            <TableColumn fx:id="colPrecioProducto"
+                                         text="Precio"
+                                         prefWidth="80"/>
+
+                            <TableColumn fx:id="colStockProducto"
+                                         text="Stock"
+                                         prefWidth="70"/>
+
+                            <TableColumn fx:id="colEstadoProducto"
+                                         text="Estado"
+                                         prefWidth="80"/>
+
+                            <TableColumn fx:id="colCategoriaProducto"
+                                         text="Categoría"
+                                         prefWidth="100"/>
+
+                        </columns>
+
+                    </TableView>
+
+
+                    <!-- FORMULARIO DE PRODUCTO -->
+
+                    <VBox fx:id="panelFormularioProducto"
+                          prefWidth="320"
+                          spacing="10"
+                          visible="false"
+                          managed="false">
+
+                        <Label fx:id="lblTituloFormularioProducto"
+                               text="Nuevo Producto"
+                               style="-fx-font-size:18;
+                          -fx-font-weight:bold;"/>
+
+
+                        <TextField fx:id="txtCodigoProducto"
+                                   promptText="Código"/>
+
+
+                        <TextField fx:id="txtNombreProducto"
+                                   promptText="Nombre"/>
+
+
+                        <TextField fx:id="txtDescripcionProducto"
+                                   promptText="Descripción"/>
+
+
+                        <TextField fx:id="txtPrecioProducto"
+                                   promptText="Precio"/>
+
+
+                        <TextField fx:id="txtStockProducto"
+                                   promptText="Stock"/>
+
+
+                        <ComboBox fx:id="cmbCategoriaProducto"
+                                  promptText="Seleccione la categoría"
+                                  maxWidth="Infinity"/>
+
+
+                        <ComboBox fx:id="cmbEstadoProducto"
+                                  promptText="Seleccione el estado"
+                                  maxWidth="Infinity"/>
+
+
+                        <HBox spacing="10">
+
+                            <Button text="Guardar"
+                                    onAction="#guardarProducto"/>
+
+                            <Button text="Cancelar"
+                                    onAction="#cancelarFormularioProducto"/>
+
+                        </HBox>
+
+                    </VBox>
+
+                </HBox>
+
+            </VBox>
+            <!-- CATEGORÍAS -->
+            <VBox fx:id="panelCategorias"
+                  spacing="10"
+                  visible="false">
+
+                <HBox alignment="CENTER_LEFT"
+                      spacing="10">
+
+                    <Label text="Gestión de Categorías"
+                           style="-fx-font-size:18;
+                      -fx-font-weight:bold;"/>
+
+                    <Button text="Mostrar"
+                            onAction="#mostrarTablaCategorias"/>
+
+                    <Button text="Nuevo"
+                            onAction="#nuevaCategoria"/>
+
+                    <Button text="Editar"
+                            onAction="#editarCategoria"/>
+
+                    <Button text="Eliminar"
+                            onAction="#eliminarCategoria"/>
+
+                </HBox>
+
+                <HBox spacing="15"
+                      VBox.vgrow="ALWAYS">
+
+                    <!-- TABLA DE CATEGORÍAS -->
+
+                    <TableView fx:id="tablaCategorias"
+                               prefWidth="650"
+                               HBox.hgrow="ALWAYS">
+
+                        <columns>
+
+                            <TableColumn fx:id="colIdCategoria"
+                                         text="ID"
+                                         prefWidth="80"/>
+
+                            <TableColumn fx:id="colNombreCategoria"
+                                         text="Nombre"
+                                         prefWidth="200"/>
+
+                            <TableColumn fx:id="colDescripcionCategoria"
+                                         text="Descripción"
+                                         prefWidth="300"/>
+
+                        </columns>
+
+                    </TableView>
+
+                    <!-- FORMULARIO -->
+
+                    <VBox fx:id="panelFormularioCategoria"
+                          prefWidth="320"
+                          spacing="10"
+                          visible="false"
+                          managed="false">
+
+                        <Label fx:id="lblTituloFormularioCategoria"
+                               text="Nueva Categoría"
+                               style="-fx-font-size:18;
+                          -fx-font-weight:bold;"/>
+
+                        <TextField fx:id="txtNombreCategoria"
+                                   promptText="Nombre"/>
+
+                        <TextField fx:id="txtDescripcionCategoria"
+                                   promptText="Descripción"/>
+
+                        <HBox spacing="10">
+
+                            <Button text="Guardar"
+                                    onAction="#guardarCategoria"/>
+
+                            <Button text="Cancelar"
+                                    onAction="#cancelarFormularioCategoria"/>
+
+                        </HBox>
+
+                    </VBox>
+
+                </HBox>
+
             </VBox>
 
-            <VBox fx:id="panelCategorias" spacing="10" visible="false">
-                <HBox alignment="CENTER_LEFT" spacing="10">
-                    <Label style="-fx-font-size:18; -fx-font-weight:bold;" text="Gestión de Categorías" />
-                    <Button onAction="#mostrarTablaCategorias" text="Mostrar" />
-                    <Button onAction="#nuevaCategoria" text="Nueva" />
-                    <Button onAction="#editarCategoria" text="Editar" />
-                    <Button onAction="#eliminarCategoria" text="Eliminar" />
-                    <Label fx:id="lblEstadoCategorias" style="-fx-font-weight:bold;" text="Esperando datos..." />
-                    <TextField fx:id="txtBuscarCategorias" promptText="Buscar por nombre o descripción" HBox.hgrow="ALWAYS" />
-                    <Button onAction="#buscarCategorias" text="Buscar" />
+            <!-- ================= PROVEEDORES ================= -->
+            <VBox fx:id="panelProveedores"
+                  spacing="10"
+                  visible="false">
+
+                <HBox alignment="CENTER_LEFT"
+                      spacing="10">
+
+                    <Label text="Gestión de Proveedores"
+                           style="-fx-font-size:18;
+                      -fx-font-weight:bold;"/>
+
+                    <Button text="Mostrar"
+                            onAction="#mostrarTablaProveedores"/>
+
+                    <Button text="Nuevo"
+                            onAction="#nuevoProveedor"/>
+
+                    <Button text="Editar"
+                            onAction="#editarProveedor"/>
+
+                    <Button text="Eliminar"
+                            onAction="#eliminarProveedor"/>
+
                 </HBox>
-                <TableView fx:id="tablaCategorias" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="colIdCategoriaTab" prefWidth="60" text="ID" />
-                        <TableColumn fx:id="colNombreCategoria" prefWidth="200" text="Nombre" />
-                        <TableColumn fx:id="colDescripcionCategoria" prefWidth="300" text="Descripción" />
-                    </columns>
-                </TableView>
+
+                <HBox spacing="15"
+                      VBox.vgrow="ALWAYS">
+
+                    <TableView fx:id="tablaProveedores"
+                               prefWidth="650"
+                               HBox.hgrow="ALWAYS">
+
+                        <columns>
+
+                            <TableColumn fx:id="colIdProveedor"
+                                         text="ID"
+                                         prefWidth="60"/>
+
+                            <TableColumn fx:id="colNombreProveedor"
+                                         text="Nombre"
+                                         prefWidth="150"/>
+
+                            <TableColumn fx:id="colTelefonoProveedor"
+                                         text="Teléfono"
+                                         prefWidth="120"/>
+
+                            <TableColumn fx:id="colCorreoProveedor"
+                                         text="Correo"
+                                         prefWidth="180"/>
+
+                            <TableColumn fx:id="colDireccionProveedor"
+                                         text="Dirección"
+                                         prefWidth="200"/>
+
+                        </columns>
+
+                    </TableView>
+
+                    <VBox fx:id="panelFormularioProveedor"
+                          prefWidth="320"
+                          spacing="10"
+                          visible="false"
+                          managed="false">
+
+                        <Label fx:id="lblTituloFormularioProveedor"
+                               text="Nuevo Proveedor"
+                               style="-fx-font-size:18;
+                          -fx-font-weight:bold;"/>
+
+                        <TextField fx:id="txtNombreProveedor"
+                                   promptText="Nombre"/>
+
+                        <TextField fx:id="txtTelefonoProveedor"
+                                   promptText="Teléfono"/>
+
+                        <TextField fx:id="txtCorreoProveedor"
+                                   promptText="Correo"/>
+
+                        <TextField fx:id="txtDireccionProveedor"
+                                   promptText="Dirección"/>
+
+                        <HBox spacing="10">
+
+                            <Button text="Guardar"
+                                    onAction="#guardarProveedor"/>
+
+                            <Button text="Cancelar"
+                                    onAction="#cancelarFormularioProveedor"/>
+
+                        </HBox>
+
+                    </VBox>
+
+                </HBox>
+
             </VBox>
-            
-            <VBox fx:id="panelVentas" spacing="10" visible="false">
-                <HBox alignment="CENTER_LEFT" spacing="10">
-                    <Label style="-fx-font-size:18; -fx-font-weight:bold;" text="Historial de Ventas" />
-                    <Button onAction="#mostrarTablaVentas" text="Mostrar" />
-                    <Button onAction="#verDetalleVenta" text="Ver detalle" />
-                    <Label fx:id="lblEstadoVentas" style="-fx-font-weight:bold;" text="Esperando datos..." />
-                    <TextField fx:id="txtBuscarVentas" promptText="Buscar por ID o total" HBox.hgrow="ALWAYS" />
-                    <Button onAction="#buscarVentas" text="Buscar" />
-                </HBox>
-                <TableView fx:id="tablaVentas" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="colIdVenta" prefWidth="50" text="ID" />
-                        <TableColumn fx:id="colFecha" prefWidth="150" text="Fecha" />
-                        <TableColumn fx:id="colSubtotal" prefWidth="90" text="Subtotal" />
-                        <TableColumn fx:id="colIva" prefWidth="80" text="IVA" />
-                        <TableColumn fx:id="colTotal" prefWidth="90" text="Total" />
-                        <TableColumn fx:id="colIdUsuarioVenta" prefWidth="90" text="Usuario" />
-                    </columns>
-                </TableView>
+
+
+            <!-- ================= VENTAS ================= -->
+
+            <VBox fx:id="panelVentas"
+                  spacing="10"
+                  visible="false">
+
+                <Label text="Historial de Ventas"
+                       style="-fx-font-size:22;
+                              -fx-font-weight:bold;"/>
+
+            </VBox>
+
+            <!-- ================= REPORTES ================= -->
+
+            <VBox fx:id="panelReportes"
+                  spacing="10"
+                  visible="false">
+
+                <Label text="Reportes"
+                       style="-fx-font-size:22;
+                              -fx-font-weight:bold;"/>
+
             </VBox>
 
         </StackPane>
+
     </center>
 
 </BorderPane>
