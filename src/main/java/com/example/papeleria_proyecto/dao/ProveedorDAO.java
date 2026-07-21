@@ -1,67 +1,18 @@
 package com.example.papeleria_proyecto.dao;
 
-import com.example.papeleria_proyecto.model.Proveedor;
 import com.example.papeleria_proyecto.db.Conexion;
+import com.example.papeleria_proyecto.model.Proveedor;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class ProveedorDAO {
 
-    public List<Proveedor> listarTodos() {
-
-        List<Proveedor> lista = new ArrayList<>();
-
-        String sql = """
-                SELECT id_proveedor,
-                       nombre,
-                       telefono,
-                       correo,
-                       direccion
-                FROM proveedores
-                ORDER BY id_proveedor DESC
-                """;
-
-        try (Connection conexion = Conexion.getConexion();
-             PreparedStatement ps = conexion.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-
-                Proveedor proveedor = new Proveedor();
-
-                proveedor.setIdProveedor(
-                        rs.getInt("id_proveedor")
-                );
-
-                proveedor.setNombre(
-                        rs.getString("nombre")
-                );
-
-                proveedor.setTelefono(
-                        rs.getString("telefono")
-                );
-
-                proveedor.setCorreo(
-                        rs.getString("correo")
-                );
-
-                proveedor.setDireccion(
-                        rs.getString("direccion")
-                );
-
-                lista.add(proveedor);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return lista;
-    }
-
-    public boolean insertar(Proveedor proveedor) {
+    public boolean insertar(Proveedor p) {
 
         String sql = """
                 INSERT INTO proveedores
@@ -69,67 +20,185 @@ public class ProveedorDAO {
                 VALUES (?, ?, ?, ?)
                 """;
 
-        try (Connection conexion = Conexion.getConexion();
-             PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try (
+                Connection con = Conexion.getConexion();
+                PreparedStatement ps = con.prepareStatement(sql)
+        ) {
 
-            ps.setString(1, proveedor.getNombre());
-            ps.setString(2, proveedor.getTelefono());
-            ps.setString(3, proveedor.getCorreo());
-            ps.setString(4, proveedor.getDireccion());
+            ps.setString(1, p.getNombre());
+            ps.setString(2, p.getTelefono());
+            ps.setString(3, p.getCorreo());
+            ps.setString(4, p.getDireccion());
 
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+
+            System.err.println(
+                    "Error al insertar proveedor: "
+                            + e.getMessage()
+            );
+
             return false;
         }
     }
 
-    public boolean actualizar(Proveedor proveedor) {
+
+    public boolean actualizar(Proveedor p) {
 
         String sql = """
                 UPDATE proveedores
-                SET nombre = ?,
-                    telefono = ?,
-                    correo = ?,
-                    direccion = ?
-                WHERE id_proveedor = ?
+                SET nombre=?,
+                    telefono=?,
+                    correo=?,
+                    direccion=?
+                WHERE id_proveedor=?
                 """;
 
-        try (Connection conexion = Conexion.getConexion();
-             PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try (
+                Connection con = Conexion.getConexion();
+                PreparedStatement ps = con.prepareStatement(sql)
+        ) {
 
-            ps.setString(1, proveedor.getNombre());
-            ps.setString(2, proveedor.getTelefono());
-            ps.setString(3, proveedor.getCorreo());
-            ps.setString(4, proveedor.getDireccion());
-            ps.setInt(5, proveedor.getIdProveedor());
+            ps.setString(1, p.getNombre());
+            ps.setString(2, p.getTelefono());
+            ps.setString(3, p.getCorreo());
+            ps.setString(4, p.getDireccion());
+            ps.setInt(5, p.getIdProveedor());
 
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+
+            System.err.println(
+                    "Error al actualizar proveedor: "
+                            + e.getMessage()
+            );
+
             return false;
         }
     }
 
+
     public boolean eliminar(int idProveedor) {
 
-        String sql = """
-                DELETE FROM proveedores
-                WHERE id_proveedor = ?
-                """;
+        String sql =
+                "DELETE FROM proveedores WHERE id_proveedor=?";
 
-        try (Connection conexion = Conexion.getConexion();
-             PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try (
+                Connection con = Conexion.getConexion();
+                PreparedStatement ps = con.prepareStatement(sql)
+        ) {
 
             ps.setInt(1, idProveedor);
 
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+
+            System.err.println(
+                    "Error al eliminar proveedor: "
+                            + e.getMessage()
+            );
+
             return false;
         }
+    }
+
+
+    public ObservableList<Proveedor> listarTodos() {
+
+        ObservableList<Proveedor> lista =
+                FXCollections.observableArrayList();
+
+        String sql =
+                "SELECT * FROM proveedores";
+
+        try (
+                Connection con = Conexion.getConexion();
+                PreparedStatement ps =
+                        con.prepareStatement(sql);
+                ResultSet rs =
+                        ps.executeQuery()
+        ) {
+
+            while (rs.next()) {
+
+                lista.add(
+
+                        new Proveedor(
+
+                                rs.getInt("id_proveedor"),
+
+                                rs.getString("nombre"),
+
+                                rs.getString("telefono"),
+
+                                rs.getString("correo"),
+
+                                rs.getString("direccion")
+
+                        )
+
+                );
+            }
+
+        } catch (SQLException e) {
+
+            System.err.println(
+                    "Error al listar proveedores: "
+                            + e.getMessage()
+            );
+        }
+
+        return lista;
+    }
+
+
+    public Proveedor buscarPorId(int idProveedor) {
+
+        String sql =
+                "SELECT * FROM proveedores WHERE id_proveedor=?";
+
+        try (
+                Connection con = Conexion.getConexion();
+                PreparedStatement ps =
+                        con.prepareStatement(sql)
+        ) {
+
+            ps.setInt(1, idProveedor);
+
+            try (
+                    ResultSet rs =
+                            ps.executeQuery()
+            ) {
+
+                if (rs.next()) {
+
+                    return new Proveedor(
+
+                            rs.getInt("id_proveedor"),
+
+                            rs.getString("nombre"),
+
+                            rs.getString("telefono"),
+
+                            rs.getString("correo"),
+
+                            rs.getString("direccion")
+
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+
+            System.err.println(
+                    "Error al buscar proveedor: "
+                            + e.getMessage()
+            );
+        }
+
+        return null;
     }
 }

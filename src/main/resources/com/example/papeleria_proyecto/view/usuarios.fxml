@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.papeleria_proyecto.controller.UsuariosController">
+
+    <!-- BARRA SUPERIOR DE ACCIONES -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Gestión de Usuarios" style="-fx-font-size:18; -fx-font-weight:bold;"/>
+        <Button text="Mostrar" onAction="#mostrarTablaUsuarios"/>
+        <Button text="Nuevo" onAction="#nuevoUsuario"/>
+        <Button text="Editar" onAction="#editarUsuario"/>
+        <Button text="Eliminar" onAction="#eliminarUsuario"/>
+        <TextField fx:id="txtBuscarUsuarios" promptText="Buscar usuario..." HBox.hgrow="ALWAYS"/>
+        <Button text="Buscar" onAction="#buscarUsuarios"/>
+    </HBox>
+
+    <HBox spacing="15" VBox.vgrow="ALWAYS">
+        <!-- TABLA -->
+        <TableView fx:id="tablaUsuarios" HBox.hgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colIdUsuario" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="colNombreUsuario" text="Nombre" prefWidth="120"/>
+                <TableColumn fx:id="colApellidoUsuario" text="Apellido" prefWidth="120"/>
+                <TableColumn fx:id="colUsuario" text="Usuario" prefWidth="100"/>
+                <TableColumn fx:id="colTelefono" text="Teléfono" prefWidth="100"/>
+                <TableColumn fx:id="colCorreo" text="Correo" prefWidth="150"/>
+                <TableColumn fx:id="colEstadoUsuario" text="Estado" prefWidth="90"/>
+                <TableColumn fx:id="colIdRol" text="Rol" prefWidth="100"/>
+            </columns>
+        </TableView>
+
+        <!-- FORMULARIO LATERAL -->
+        <VBox fx:id="panelFormularioUsuario" prefWidth="320" spacing="10" visible="false" managed="false">
+            <Label fx:id="lblTituloFormulario" text="Nuevo Usuario" style="-fx-font-size:18; -fx-font-weight:bold;"/>
+            <TextField fx:id="txtNombre" promptText="Nombre"/>
+            <TextField fx:id="txtApellido" promptText="Apellido"/>
+            <TextField fx:id="txtUsuario" promptText="Usuario"/>
+            <PasswordField fx:id="txtContrasena" promptText="Contraseña"/>
+            <TextField fx:id="txtTelefono" promptText="Teléfono"/>
+            <TextField fx:id="txtCorreo" promptText="Correo"/>
+            <ComboBox fx:id="cmbRol" promptText="Seleccione el rol" maxWidth="Infinity"/>
+            <ComboBox fx:id="cmbEstado" promptText="Seleccione el estado" maxWidth="Infinity"/>
+            <HBox spacing="10">
+                <Button text="Guardar" onAction="#guardarUsuario"/>
+                <Button text="Cancelar" onAction="#cancelarFormularioUsuario"/>
+            </HBox>
+        </VBox>
+    </HBox>
+</VBox>

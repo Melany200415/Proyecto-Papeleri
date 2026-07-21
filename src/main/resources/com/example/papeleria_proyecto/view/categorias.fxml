@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.papeleria_proyecto.controller.CategoriasController">
+
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Gestión de Categorías" style="-fx-font-size:18; -fx-font-weight:bold;"/>
+        <Button text="Mostrar Todas" onAction="#cargarCategorias"/>
+        <Button text="Nueva" onAction="#nuevaCategoria"/>
+        <Button text="Editar" onAction="#editarCategoria"/>
+        <Button text="Eliminar" onAction="#eliminarCategoria"/>
+    </HBox>
+
+    <HBox spacing="15" VBox.vgrow="ALWAYS">
+        <TableView fx:id="tablaCategorias" HBox.hgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
+                <TableColumn fx:id="colNombre" text="Nombre Categoría" prefWidth="200"/>
+                <TableColumn fx:id="colDescripcion" text="Descripción" prefWidth="350"/>
+            </columns>
+        </TableView>
+
+        <VBox fx:id="panelFormulario" prefWidth="280" spacing="10" visible="false" managed="false">
+            <Label fx:id="lblTituloFormulario" text="Nueva Categoría" style="-fx-font-size:16; -fx-font-weight:bold;"/>
+            <TextField fx:id="txtNombre" promptText="Nombre de la categoría"/>
+            <TextArea fx:id="txtDescripcion" promptText="Descripción detallada" prefHeight="100"/>
+            <HBox spacing="10">
+                <Button text="Guardar" onAction="#guardarCategoria"/>
+                <Button text="Cancelar" onAction="#cancelarFormulario"/>
+            </HBox>
+        </VBox>
+    </HBox>
+</VBox>

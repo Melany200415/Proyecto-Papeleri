@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.papeleria_proyecto.controller.VentasController">
+
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Historial de Ventas" style="-fx-font-size:18; -fx-font-weight:bold;"/>
+        <Button text="Refrescar Ventas" onAction="#cargarVentas"/>
+    </HBox>
+
+    <TableView fx:id="tablaVentas" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId" text="ID Venta" prefWidth="80"/>
+            <TableColumn fx:id="colFecha" text="Fecha y Hora" prefWidth="180"/>
+            <TableColumn fx:id="colSubtotal" text="Subtotal ($)" prefWidth="100"/>
+            <TableColumn fx:id="colIva" text="IVA ($)" prefWidth="100"/>
+            <TableColumn fx:id="colTotal" text="Total ($)" prefWidth="120"/>
+            <TableColumn fx:id="colUsuario" text="ID Vendedor" prefWidth="100"/>
+        </columns>
+    </TableView>
+</VBox>

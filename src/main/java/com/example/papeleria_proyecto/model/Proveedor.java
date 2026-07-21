@@ -8,12 +8,26 @@ public class Proveedor {
     private String correo;
     private String direccion;
 
-    public Proveedor() {
+    // Constructor para insertar
+    public Proveedor(String nombre,
+                     String telefono,
+                     String correo,
+                     String direccion) {
+
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.direccion = direccion;
     }
 
-    public Proveedor(String nombre, String telefono,
-                     String correo, String direccion) {
+    // Constructor para listar
+    public Proveedor(int idProveedor,
+                     String nombre,
+                     String telefono,
+                     String correo,
+                     String direccion) {
 
+        this.idProveedor = idProveedor;
         this.nombre = nombre;
         this.telefono = telefono;
         this.correo = correo;
