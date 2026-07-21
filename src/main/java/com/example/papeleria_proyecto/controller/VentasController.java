@@ -10,6 +10,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
 public class VentasController {
@@ -25,11 +26,29 @@ public class VentasController {
     @FXML
     public void initialize() {
         colId.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getIdVenta()));
-        colFecha.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getFecha()));
-        colSubtotal.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getSubtotal()));
-        colIva.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getIva()));
-        colTotal.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getTotal()));
         colUsuario.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getIdUsuario()));
+        colFecha.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getFecha()));
+
+        // Total
+        colTotal.setCellValueFactory(c -> {
+            BigDecimal total = BigDecimal.valueOf(c.getValue().getTotal());
+            return new SimpleObjectProperty<>(total);
+        });
+
+        // Subtotal calculado (Total / 1.15)
+        colSubtotal.setCellValueFactory(c -> {
+            BigDecimal total = BigDecimal.valueOf(c.getValue().getTotal());
+            BigDecimal subtotal = total.divide(new BigDecimal("1.15"), 2, RoundingMode.HALF_UP);
+            return new SimpleObjectProperty<>(subtotal);
+        });
+
+        // IVA calculado (Total - Subtotal)
+        colIva.setCellValueFactory(c -> {
+            BigDecimal total = BigDecimal.valueOf(c.getValue().getTotal());
+            BigDecimal subtotal = total.divide(new BigDecimal("1.15"), 2, RoundingMode.HALF_UP);
+            BigDecimal iva = total.subtract(subtotal);
+            return new SimpleObjectProperty<>(iva);
+        });
 
         tablaVentas.setItems(listaVentas);
         cargarVentas();

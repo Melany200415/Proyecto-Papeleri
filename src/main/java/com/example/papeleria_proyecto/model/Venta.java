@@ -1,79 +1,36 @@
 package com.example.papeleria_proyecto.model;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Venta {
-
     private int idVenta;
-    private LocalDateTime fecha;
-    private BigDecimal subtotal;
-    private BigDecimal iva;
-    private BigDecimal total;
     private int idUsuario;
+    private LocalDateTime fecha;
+    private double total;
+    private String estado;
 
-    public Venta() {
-    }
+    public Venta() {}
 
-    public Venta(int idVenta, LocalDateTime fecha, BigDecimal subtotal, BigDecimal iva,
-                  BigDecimal total, int idUsuario) {
+    public Venta(int idVenta, int idUsuario, LocalDateTime fecha, double total, String estado) {
         this.idVenta = idVenta;
-        this.fecha = fecha;
-        this.subtotal = subtotal;
-        this.iva = iva;
-        this.total = total;
         this.idUsuario = idUsuario;
-    }
-
-    public Venta(BigDecimal subtotal, BigDecimal iva, BigDecimal total, int idUsuario) {
-        this(0, null, subtotal, iva, total, idUsuario);
-    }
-
-    public int getIdVenta() {
-        return idVenta;
-    }
-
-    public void setIdVenta(int idVenta) {
-        this.idVenta = idVenta;
-    }
-
-    public LocalDateTime getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
-    }
-
-    public BigDecimal getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(BigDecimal subtotal) {
-        this.subtotal = subtotal;
-    }
-
-    public BigDecimal getIva() {
-        return iva;
-    }
-
-    public void setIva(BigDecimal iva) {
-        this.iva = iva;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
         this.total = total;
+        this.estado = estado;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
-    }
+    public int getIdVenta() { return idVenta; }
+    public void setIdVenta(int idVenta) { this.idVenta = idVenta; }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
-    }
+    public int getIdUsuario() { return idUsuario; }
+    public void setIdUsuario(int idUsuario) { this.idUsuario = idUsuario; }
+
+    public LocalDateTime getFecha() { return fecha; }
+    public void setFecha(LocalDateTime fecha) { this.fecha = fecha; }
+
+    public double getTotal() { return total; }
+    public void setTotal(double total) { this.total = total; }
+
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
 }

@@ -1,6 +1,5 @@
 package com.example.papeleria_proyecto.dao;
 
-
 import com.example.papeleria_proyecto.db.Conexion;
 import com.example.papeleria_proyecto.model.Producto;
 import javafx.collections.FXCollections;
@@ -10,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductoDAO {
 
@@ -74,7 +75,7 @@ public class ProductoDAO {
 
     public ObservableList<Producto> listarTodos() {
         ObservableList<Producto> lista = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM productos";
+        String sql = "SELECT * FROM productos WHERE estado = 1";
 
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -125,5 +126,52 @@ public class ProductoDAO {
             System.err.println("Error al buscar producto: " + e.getMessage());
         }
         return null;
+    }
+
+    // Buscar por Código o Nombre (Solo productos activos, estado = 1)
+    public List<Producto> buscarPorCodigoONombre(String criterio) {
+        List<Producto> lista = new ArrayList<>();
+        String sql = "SELECT * FROM productos WHERE (codigo = ? OR nombre LIKE ?) AND estado = 1";
+        try (Connection con = Conexion.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, criterio);
+            ps.setString(2, "%" + criterio + "%");
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(new Producto(
+                            rs.getInt("id_producto"),
+                            rs.getString("codigo"),
+                            rs.getString("nombre"),
+                            rs.getString("descripcion"),
+                            rs.getBigDecimal("precio"),
+                            rs.getInt("stock"),
+                            rs.getInt("estado"),
+                            rs.getInt("id_categoria")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar por código o nombre: " + e.getMessage());
+        }
+        return lista;
+    }
+
+    // Descontar Stock automáticamente al cobrar
+    public boolean descontarStock(int idProducto, int cantidadVendida) {
+        String sql = "UPDATE productos SET stock = stock - ? WHERE id_producto = ? AND stock >= ?";
+        try (Connection con = Conexion.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, cantidadVendida);
+            ps.setInt(2, idProducto);
+            ps.setInt(3, cantidadVendida);
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al descontar stock: " + e.getMessage());
+            return false;
+        }
     }
 }

@@ -5,200 +5,105 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="720" prefWidth="1250"
-            xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.papeleria_proyecto.controller.CajeroController"
-            stylesheets="@../css/estilos.css">
+<BorderPane prefHeight="1110.0" prefWidth="1250" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.papeleria_proyecto.controller.CajeroController">
 
     <!-- CABECERA -->
     <top>
-
-        <VBox alignment="CENTER" spacing="8">
-
+        <VBox alignment="CENTER" prefHeight="159.0" prefWidth="1250.0" spacing="8">
             <padding>
-                <Insets top="15" bottom="15"/>
+                <Insets bottom="15" top="15" />
             </padding>
 
-            <ImageView fitHeight="95"
-                       fitWidth="95"
-                       preserveRatio="true">
-
+            <ImageView fitHeight="155.0" fitWidth="140.0" preserveRatio="true">
                 <image>
-                    <Image url="@../images/cajero.png"/>
+                    <Image url="@../images/cajero.png" />
                 </image>
-
             </ImageView>
 
-            <Label text="MÓDULO CAJERO"
-                   styleClass="cajero-title"/>
-
-            <Label text="Registro y Gestión de Ventas"
-                   styleClass="cajero-subtitle"/>
-
+            <Label styleClass="cajero-title" text="MÓDULO CAJERO" />
+            <Label styleClass="cajero-subtitle" text="Registro y Gestión de Ventas" />
         </VBox>
-
     </top>
 
     <center>
-
-        <VBox spacing="20"
-              styleClass="cajero-panel">
-
+        <VBox prefHeight="576.0" prefWidth="1250.0" spacing="15" styleClass="cajero-panel">
             <padding>
-                <Insets top="20"
-                        left="20"
-                        right="20"
-                        bottom="20"/>
+                <Insets bottom="15" left="20" right="20" top="15" />
             </padding>
-
-            <!-- DATOS -->
-
-            <GridPane hgap="15"
-                      vgap="15">
-
+            <Button mnemonicParsing="false" onAction="#cerrarSesion" styleClass="btn-eliminar" text=" Cerrar Sesión" />
+            <GridPane hgap="12" vgap="12">
                 <columnConstraints>
-
-                    <ColumnConstraints prefWidth="90"/>
-                    <ColumnConstraints prefWidth="220"/>
-                    <ColumnConstraints prefWidth="90"/>
-                    <ColumnConstraints prefWidth="220"/>
-
+                    <ColumnConstraints prefWidth="100" />
+                    <ColumnConstraints prefWidth="250" />
+                    <ColumnConstraints prefWidth="120" />
+                    <ColumnConstraints prefWidth="100" />
+                    <ColumnConstraints prefWidth="200" />
+                    <ColumnConstraints prefWidth="100" />
                 </columnConstraints>
 
-                <Label text="Código"
-                       GridPane.columnIndex="0"/>
+                <!-- Búsqueda por Nombre o Código -->
+                <Label text="Buscar Por:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="txtBuscarProducto" onAction="#buscarProducto" promptText="Ingrese nombre o código..." GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Button onAction="#buscarProducto" text=" Buscar" GridPane.columnIndex="2" GridPane.rowIndex="0" />
 
-                <TextField fx:id="txtCodigo"
-                           promptText="Código del producto"
-                           GridPane.columnIndex="1"/>
+                <!-- Datos del Producto Encontrado/Seleccionado -->
+                <Label text="Producto:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextField fx:id="txtProducto" editable="false" promptText="Nombre del producto" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                <Label text="Producto"
-                       GridPane.columnIndex="2"/>
+                <Label text="Stock Disponible:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <TextField fx:id="txtStock" editable="false" promptText="0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
 
-                <TextField fx:id="txtProducto"
-                           promptText="Nombre"
-                           editable="false"
-                           GridPane.columnIndex="3"/>
+                <Label text="Precio ($):" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                <TextField fx:id="txtPrecio" editable="false" promptText="0.00" GridPane.columnIndex="5" GridPane.rowIndex="1" />
 
-                <Label text="Cantidad"
-                       GridPane.columnIndex="0"
-                       GridPane.rowIndex="1"/>
+                <Label text="Cantidad:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Spinner fx:id="spCantidad" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                <Spinner fx:id="spCantidad"
-                         GridPane.columnIndex="1"
-                         GridPane.rowIndex="1"/>
-
-                <Label text="Precio"
-                       GridPane.columnIndex="2"
-                       GridPane.rowIndex="1"/>
-
-                <TextField fx:id="txtPrecio"
-                           editable="false"
-                           GridPane.columnIndex="3"
-                           GridPane.rowIndex="1"/>
-
+                <Button onAction="#agregarProducto" styleClass="btn-guardar" text="+ Agregar al Carrito" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
             </GridPane>
 
-            <!-- BOTONES -->
-
-            <HBox alignment="CENTER"
-                  spacing="15">
-
-                <Button text="Agregar"
-                        styleClass="btn-guardar"/>
-
-                <Button text="Nueva Venta"
-                        styleClass="btn-nuevo"/>
-
-                <Button text="Eliminar"
-                        styleClass="btn-eliminar"/>
-
-                <Button text="Cobrar"
-                        styleClass="btn-cobrar"/>
-
+            <!-- BOTONES DE ACCIÓN DEL CARRITO Y VENTA -->
+            <HBox alignment="CENTER" spacing="15">
+                <Button onAction="#nuevaVenta" styleClass="btn-nuevo" text="Nueva Venta" />
+                <Button onAction="#eliminarProducto" styleClass="btn-eliminar" text="Eliminar Item Seleccionado" />
+                <Button onAction="#cobrar" styleClass="btn-cobrar" text="💳 Cobrar e Imprimir Comprobante" />
             </HBox>
 
-            <!-- TABLA CARRITO -->
-
-            <Label text="Carrito de Venta"
-                   styleClass="titulo-tabla"/>
-            <TableView fx:id="tblCarrito" VBox.vgrow="ALWAYS">
-
+            <!-- TABLA CARRITO DE COMPRA -->
+            <Label styleClass="titulo-tabla" text="Carrito de Venta Actual" />
+            <TableView fx:id="tblCarrito" prefHeight="200" VBox.vgrow="ALWAYS">
                 <columns>
-
-                    <TableColumn fx:id="colCodigo"
-                                 text="Código"
-                                 prefWidth="120"/>
-
-                    <TableColumn fx:id="colProducto"
-                                 text="Producto"
-                                 prefWidth="260"/>
-
-                    <TableColumn fx:id="colCantidad"
-                                 text="Cantidad"
-                                 prefWidth="120"/>
-
-                    <TableColumn fx:id="colPrecio"
-                                 text="Precio"
-                                 prefWidth="120"/>
-
-                    <TableColumn fx:id="colSubtotal"
-                                 text="Subtotal"
-                                 prefWidth="150"/>
-
+                    <TableColumn fx:id="colCodigo" prefWidth="120" text="Código" />
+                    <TableColumn fx:id="colProducto" prefWidth="280" text="Producto" />
+                    <TableColumn fx:id="colCantidad" prefWidth="100" text="Cantidad" />
+                    <TableColumn fx:id="colPrecio" prefWidth="130" text="Precio Unitario" />
+                    <TableColumn fx:id="colSubtotal" prefWidth="150" text="Subtotal" />
                 </columns>
-
             </TableView>
 
-            <!-- TOTAL -->
-
-            <HBox alignment="CENTER_RIGHT"
-                  spacing="15">
-
-                <Label text="TOTAL"
-                       style="-fx-font-size:22;-fx-font-weight:bold;"/>
-
-                <Label fx:id="lblTotal"
-                       text="0.00"
-                       style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#16A34A;"/>
+            <!-- TOTAL A PAGAR -->
+            <HBox alignment="CENTER_RIGHT" spacing="15">
+                <Label styleClass="label-total-titulo" text="TOTAL A PAGAR:" />
+                <Label fx:id="lblTotal" styleClass="label-total-valor" text="0.00" />
             </HBox>
 
-            <!-- HISTORIAL -->
-
-            <Label text="Historial de Ventas"
-                   styleClass="titulo-tabla"/>
-            <TableView fx:id="tblVentas"
-                       prefHeight="180">
-
+            <!-- HISTORIAL EXCLUSIVO DEL CAJERO LOGUEADO -->
+            <Label styleClass="titulo-tabla" text="Mis Ventas Realizadas (Historial Cajero)" />
+            <TableView fx:id="tblVentas" prefHeight="225.0" prefWidth="1198.0">
                 <columns>
-
-                    <TableColumn fx:id="colVenta"
-                                 text="Venta"
-                                 prefWidth="90"/>
-
-                    <TableColumn fx:id="colFecha"
-                                 text="Fecha"
-                                 prefWidth="180"/>
-
-                    <TableColumn fx:id="colCliente"
-                                 text="Cliente"
-                                 prefWidth="250"/>
-
-                    <TableColumn fx:id="colTotalVenta"
-                                 text="Total"
-                                 prefWidth="120"/>
-
-                    <TableColumn fx:id="colEstado"
-                                 text="Estado"
-                                 prefWidth="140"/>
-
+                    <TableColumn fx:id="colVenta" prefWidth="140" text="Nº Factura / Venta" />
+                    <TableColumn fx:id="colFecha" prefWidth="200" text="Fecha y Hora" />
+                    <TableColumn fx:id="colTotalVenta" prefWidth="150" text="Total ($)" />
+                    <TableColumn fx:id="colEstado" prefWidth="140" text="Estado" />
                 </columns>
-
             </TableView>
 
         </VBox>
-
     </center>
 
 </BorderPane>

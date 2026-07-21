@@ -1,222 +1,302 @@
 package com.example.papeleria_proyecto.controller;
 
-import javafx.beans.property.SimpleStringProperty;
+import com.example.papeleria_proyecto.dao.ProductoDAO;
+import com.example.papeleria_proyecto.dao.VentaDAO;
+import com.example.papeleria_proyecto.model.DetalleVenta;
+import com.example.papeleria_proyecto.model.Producto;
+import com.example.papeleria_proyecto.model.Usuario;
+import com.example.papeleria_proyecto.model.Venta;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.event.ActionEvent;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import java.io.IOException;
+import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class CajeroController {
+public class CajeroController implements Initializable {
 
-    @FXML
-    private TextField txtCodigo;
+    // --- CONTROLES FXML DE BÚSQUEDA Y PRODUCTO ---
+    @FXML private TextField txtBuscarProducto;
+    @FXML private TextField txtProducto;
+    @FXML private TextField txtStock;
+    @FXML private TextField txtPrecio;
+    @FXML private Spinner<Integer> spCantidad;
 
-    @FXML
-    private TextField txtProducto;
+    // --- TABLA Y COLUMNAS DEL CARRITO ---
+    @FXML private TableView<DetalleVenta> tblCarrito;
+    @FXML private TableColumn<DetalleVenta, String> colCodigo;
+    @FXML private TableColumn<DetalleVenta, String> colProducto;
+    @FXML private TableColumn<DetalleVenta, Integer> colCantidad;
+    @FXML private TableColumn<DetalleVenta, Double> colPrecio;
+    @FXML private TableColumn<DetalleVenta, Double> colSubtotal;
+    @FXML private Label lblTotal;
 
-    @FXML
-    private TextField txtPrecio;
+    // --- TABLA Y COLUMNAS HISTORIAL CAJERO ---
+    @FXML private TableView<Venta> tblVentas;
+    @FXML private TableColumn<Venta, Integer> colVenta;
+    @FXML private TableColumn<Venta, LocalDateTime> colFecha;
+    @FXML private TableColumn<Venta, Double> colTotalVenta;
+    @FXML private TableColumn<Venta, String> colEstado;
 
-    @FXML
-    private Spinner<Integer> spCantidad;
+    // --- LISTAS Y VARIABLES DE ESTADO ---
+    private ObservableList<DetalleVenta> listaCarrito = FXCollections.observableArrayList();
+    private ObservableList<Venta> listaHistorialVentas = FXCollections.observableArrayList();
 
-    @FXML
-    private Label lblTotal;
+    private Producto productoSeleccionado;
+    private Usuario usuarioActual;
 
-    @FXML
-    private TableView<ObservableList<String>> tblCarrito;
+    private final ProductoDAO productoDAO = new ProductoDAO();
+    private final VentaDAO ventaDAO = new VentaDAO();
 
-    @FXML
-    private TableColumn<ObservableList<String>, String> colCodigo;
-
-    @FXML
-    private TableColumn<ObservableList<String>, String> colProducto;
-
-    @FXML
-    private TableColumn<ObservableList<String>, String> colCantidad;
-
-    @FXML
-    private TableColumn<ObservableList<String>, String> colPrecio;
-
-    @FXML
-    private TableColumn<ObservableList<String>, String> colSubtotal;
-
-    @FXML
-    private TableView<ObservableList<String>> tblVentas;
-
-    @FXML
-    private TableColumn<ObservableList<String>, String> colVenta;
-
-    @FXML
-    private TableColumn<ObservableList<String>, String> colFecha;
-
-    @FXML
-    private TableColumn<ObservableList<String>, String> colCliente;
-
-    @FXML
-    private TableColumn<ObservableList<String>, String> colTotalVenta;
-
-    @FXML
-    private TableColumn<ObservableList<String>, String> colEstado;
-
-    private final ObservableList<ObservableList<String>> carrito =
-            FXCollections.observableArrayList();
-
-    private double total = 0;
-
-    @FXML
-    public void initialize() {
-
-        spCantidad.setValueFactory(
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1)
-        );
-
-        configurarTablaCarrito();
-        configurarTablaVentas();
-
-        lblTotal.setText("$0.00");
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        configurarTablas();
+        configurarSpinner(1);
     }
 
-    private void configurarTablaCarrito() {
-
-        colCodigo.setCellValueFactory(c ->
-                new SimpleStringProperty(c.getValue().get(0)));
-
-        colProducto.setCellValueFactory(c ->
-                new SimpleStringProperty(c.getValue().get(1)));
-
-        colCantidad.setCellValueFactory(c ->
-                new SimpleStringProperty(c.getValue().get(2)));
-
-        colPrecio.setCellValueFactory(c ->
-                new SimpleStringProperty(c.getValue().get(3)));
-
-        colSubtotal.setCellValueFactory(c ->
-                new SimpleStringProperty(c.getValue().get(4)));
-
-        tblCarrito.setItems(carrito);
+    public void setUsuarioActual(Usuario usuario) {
+        this.usuarioActual = usuario;
+        cargarHistorialCajero();
     }
 
-    private void configurarTablaVentas() {
+    private void configurarTablas() {
+        // Carrito
+        colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigoProducto"));
+        colProducto.setCellValueFactory(new PropertyValueFactory<>("nombreProducto"));
+        colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
+        colSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
+        tblCarrito.setItems(listaCarrito);
 
-        colVenta.setCellValueFactory(c ->
-                new SimpleStringProperty(c.getValue().get(0)));
+        // Historial Cajero
+        colVenta.setCellValueFactory(new PropertyValueFactory<>("idVenta"));
+        colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+        colTotalVenta.setCellValueFactory(new PropertyValueFactory<>("total"));
+        colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
+        tblVentas.setItems(listaHistorialVentas);
+    }
 
-        colFecha.setCellValueFactory(c ->
-                new SimpleStringProperty(c.getValue().get(1)));
+    private void configurarSpinner(int maxStock) {
+        int max = Math.max(1, maxStock);
+        SpinnerValueFactory<Integer> valueFactory =
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, max, 1);
+        spCantidad.setValueFactory(valueFactory);
+    }
 
-        colCliente.setCellValueFactory(c ->
-                new SimpleStringProperty(c.getValue().get(2)));
+    @FXML
+    private void buscarProducto() {
+        String criterio = txtBuscarProducto.getText().trim();
+        if (criterio.isEmpty()) {
+            mostrarAlerta("Atención", "Ingrese un código o nombre para buscar.", Alert.AlertType.WARNING);
+            return;
+        }
 
-        colTotalVenta.setCellValueFactory(c ->
-                new SimpleStringProperty(c.getValue().get(3)));
+        List<Producto> resultados = productoDAO.buscarPorCodigoONombre(criterio);
 
-        colEstado.setCellValueFactory(c ->
-                new SimpleStringProperty(c.getValue().get(4)));
+        if (resultados.isEmpty()) {
+            mostrarAlerta("Sin resultados", "No se encontró ningún producto activo.", Alert.AlertType.INFORMATION);
+            limpiarFormularioProducto();
+        } else if (resultados.size() == 1) {
+            cargarProducto(resultados.get(0));
+        } else {
+            mostrarDialogoSeleccionProducto(resultados);
+        }
+    }
+
+    private void cargarProducto(Producto producto) {
+        if (producto.getStock() <= 0) {
+            mostrarAlerta("Sin Stock", "El producto no cuenta con existencias disponibles.", Alert.AlertType.WARNING);
+            limpiarFormularioProducto();
+            return;
+        }
+
+        this.productoSeleccionado = producto;
+        txtProducto.setText(producto.getNombre());
+        txtStock.setText(String.valueOf(producto.getStock()));
+        txtPrecio.setText(String.format("%.2f", producto.getPrecio().doubleValue()));
+
+        configurarSpinner(producto.getStock());
+    }
+
+    private void mostrarDialogoSeleccionProducto(List<Producto> lista) {
+        ChoiceDialog<Producto> dialog = new ChoiceDialog<>(lista.get(0), lista);
+        dialog.setTitle("Seleccionar Producto");
+        dialog.setHeaderText("Múltiples coincidencias encontradas:");
+        dialog.setContentText("Elija un producto:");
+
+        Optional<Producto> result = dialog.showAndWait();
+        result.ifPresent(this::cargarProducto);
     }
 
     @FXML
     private void agregarProducto() {
-
-        String codigo = txtCodigo.getText();
-        String producto = txtProducto.getText();
-
-        if(codigo.isEmpty() || producto.isEmpty()){
-            mostrarMensaje("Ingrese un producto.");
+        if (productoSeleccionado == null) {
+            mostrarAlerta("Atención", "Debe buscar y seleccionar un producto primero.", Alert.AlertType.WARNING);
             return;
         }
 
         int cantidad = spCantidad.getValue();
-        double precio = Double.parseDouble(txtPrecio.getText());
+        if (cantidad > productoSeleccionado.getStock()) {
+            mostrarAlerta("Stock Insuficiente", "La cantidad supera el stock disponible (" + productoSeleccionado.getStock() + ").", Alert.AlertType.ERROR);
+            return;
+        }
 
-        double subtotal = cantidad * precio;
+        double precioDouble = productoSeleccionado.getPrecio().doubleValue();
 
-        ObservableList<String> fila =
-                FXCollections.observableArrayList();
+        for (DetalleVenta item : listaCarrito) {
+            if (item.getIdProducto() == productoSeleccionado.getIdProducto()) {
+                int nuevaCantidad = item.getCantidad() + cantidad;
+                if (nuevaCantidad > productoSeleccionado.getStock()) {
+                    mostrarAlerta("Límite Alcanzado", "Supera el stock disponible (" + productoSeleccionado.getStock() + ").", Alert.AlertType.WARNING);
+                    return;
+                }
+                item.setCantidad(nuevaCantidad);
+                item.setSubtotal(nuevaCantidad * item.getPrecioUnitario());
+                tblCarrito.refresh();
+                calcularTotal();
+                limpiarFormularioProducto();
+                return;
+            }
+        }
 
-        fila.add(codigo);
-        fila.add(producto);
-        fila.add(String.valueOf(cantidad));
-        fila.add(String.format("%.2f", precio));
-        fila.add(String.format("%.2f", subtotal));
+        DetalleVenta detalle = new DetalleVenta();
+        detalle.setIdProducto(productoSeleccionado.getIdProducto());
+        detalle.setCodigoProducto(productoSeleccionado.getCodigo());
+        detalle.setNombreProducto(productoSeleccionado.getNombre());
+        detalle.setCantidad(cantidad);
+        detalle.setPrecioUnitario(precioDouble);
+        detalle.setSubtotal(cantidad * precioDouble);
 
-        carrito.add(fila);
-
-        total += subtotal;
-
-        lblTotal.setText("$" + String.format("%.2f", total));
-
-        limpiarCampos();
+        listaCarrito.add(detalle);
+        calcularTotal();
+        limpiarFormularioProducto();
     }
 
     @FXML
     private void eliminarProducto() {
-
-        ObservableList<String> fila =
-                tblCarrito.getSelectionModel().getSelectedItem();
-
-        if(fila == null){
-            mostrarMensaje("Seleccione un producto.");
+        DetalleVenta seleccionado = tblCarrito.getSelectionModel().getSelectedItem();
+        if (seleccionado == null) {
+            mostrarAlerta("Atención", "Seleccione un producto del carrito para eliminar.", Alert.AlertType.WARNING);
             return;
         }
 
-        total -= Double.parseDouble(fila.get(4));
-
-        carrito.remove(fila);
-
-        lblTotal.setText("$" + String.format("%.2f", total));
+        listaCarrito.remove(seleccionado);
+        calcularTotal();
     }
 
-    @FXML
-    private void nuevaVenta() {
-
-        carrito.clear();
-
-        total = 0;
-
-        lblTotal.setText("$0.00");
-
-        limpiarCampos();
+    private void calcularTotal() {
+        double total = listaCarrito.stream().mapToDouble(DetalleVenta::getSubtotal).sum();
+        lblTotal.setText(String.format("$%.2f", total));
     }
 
     @FXML
     private void cobrar() {
-
-        if(carrito.isEmpty()){
-            mostrarMensaje("No existen productos en la venta.");
+        if (listaCarrito.isEmpty()) {
+            mostrarAlerta("Carrito Vacío", "No hay productos en el carrito de venta.", Alert.AlertType.WARNING);
             return;
         }
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        double total = listaCarrito.stream().mapToDouble(DetalleVenta::getSubtotal).sum();
 
-        alert.setTitle("Venta");
+        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmacion.setTitle("Confirmar Cobro");
+        confirmacion.setHeaderText(String.format("Total a pagar: $%.2f", total));
+        confirmacion.setContentText("¿Desea procesar la venta?");
 
-        alert.setHeaderText(null);
+        Optional<ButtonType> resultado = confirmacion.showAndWait();
+        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
 
-        alert.setContentText("Venta registrada correctamente.");
+            int idUsuario = (usuarioActual != null) ? usuarioActual.getIdUsuario() : 1;
 
-        alert.showAndWait();
+            int idVentaGenerada = ventaDAO.registrarVenta(idUsuario, total, listaCarrito);
 
-        nuevaVenta();
+            if (idVentaGenerada > 0) {
+                for (DetalleVenta item : listaCarrito) {
+                    productoDAO.descontarStock(item.getIdProducto(), item.getCantidad());
+                }
+
+                mostrarAlerta("Venta Exitosa", "Venta Nº " + idVentaGenerada + " registrada correctamente.", Alert.AlertType.INFORMATION);
+
+                nuevaVenta();
+                cargarHistorialCajero();
+            } else {
+                mostrarAlerta("Error", "No se pudo registrar la venta en la base de datos.", Alert.AlertType.ERROR);
+            }
+        }
     }
 
-    private void limpiarCampos(){
+    @FXML
+    private void nuevaVenta() {
+        listaCarrito.clear();
+        lblTotal.setText("$0.00");
+        limpiarFormularioProducto();
+    }
 
-        txtCodigo.clear();
+    private void cargarHistorialCajero() {
+        if (usuarioActual != null) {
+            listaHistorialVentas.clear();
+            listaHistorialVentas.addAll(ventaDAO.obtenerVentasPorUsuario(usuarioActual.getIdUsuario()));
+        }
+    }
+
+    private void limpiarFormularioProducto() {
+        productoSeleccionado = null;
+        txtBuscarProducto.clear();
         txtProducto.clear();
+        txtStock.clear();
         txtPrecio.clear();
-
-        spCantidad.getValueFactory().setValue(1);
+        configurarSpinner(1);
     }
+    @FXML
+    private void cerrarSesion(ActionEvent event) {
+        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmacion.setTitle("Cerrar Sesión");
+        confirmacion.setHeaderText("¿Está seguro de que desea salir?");
+        confirmacion.setContentText("Se cerrará la sesión actual del cajero.");
 
-    private void mostrarMensaje(String mensaje){
+        Optional<ButtonType> resultado = confirmacion.showAndWait();
+        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+            try {
+                // Intentar cargar la vista del login
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/papeleria_proyecto/view/login.fxml"));
+                Parent root = loader.load();
 
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+                // Obtener el Stage usando un control FXML existente (por ejemplo, tblCarrito o txtProducto)
+                Stage stage = (Stage) tblCarrito.getScene().getWindow();
 
+                stage.setScene(new Scene(root));
+                stage.setTitle("Iniciar Sesión - Papelería");
+                stage.centerOnScreen();
+                stage.show();
+
+            } catch (Exception e) {
+                System.err.println("Error al cerrar sesión: " + e.getMessage());
+                e.printStackTrace();
+
+                // Alerta si la ruta FXML está mal escrita o no existe
+                mostrarAlerta("Error de Navegación",
+                        "No se pudo cargar la pantalla de login. Verifique la ruta del archivo FXML.\nDetalle: " + e.getMessage(),
+                        Alert.AlertType.ERROR);
+            }
+        }
+    }
+    private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
+        Alert alert = new Alert(tipo);
+        alert.setTitle(titulo);
         alert.setHeaderText(null);
-
         alert.setContentText(mensaje);
-
         alert.showAndWait();
     }
 }
