@@ -9,6 +9,10 @@ public class Usuario extends Persona {
     private int estado;
     private int idRol;
 
+    public Usuario() {
+        super();
+    }
+
     public Usuario(
             int idUsuario,
             String nombre,

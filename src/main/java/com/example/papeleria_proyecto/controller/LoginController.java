@@ -1,11 +1,16 @@
 package com.example.papeleria_proyecto.controller;
 
 import com.example.papeleria_proyecto.db.Conexion;
+import com.example.papeleria_proyecto.model.Usuario;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -50,12 +55,23 @@ public class LoginController {
             return;
         }
 
-        String usuario = txtUsuario.getText().trim();
-        String password = txtPassword.getText();
-        String rol = cbRol.getValue();
+        String nombreUsuario =
+                txtUsuario.getText().trim();
 
-        if (usuario.isEmpty() || password.isEmpty() || rol == null) {
-            lblMensaje.setText("Complete todos los campos.");
+        String password =
+                txtPassword.getText();
+
+        String rol =
+                cbRol.getValue();
+
+        if (nombreUsuario.isEmpty()
+                || password.isEmpty()
+                || rol == null) {
+
+            lblMensaje.setText(
+                    "Complete todos los campos."
+            );
+
             return;
         }
 
@@ -71,128 +87,201 @@ public class LoginController {
                 """;
 
         try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+             PreparedStatement ps =
+                     con.prepareStatement(sql)) {
 
-            ps.setString(1, usuario);
+            ps.setString(1, nombreUsuario);
             ps.setString(2, password);
             ps.setInt(3, idRol);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery()) {
 
-            if (rs.next()) {
+                if (rs.next()) {
 
-                intentosFallidos = 0;
+                    intentosFallidos = 0;
 
-                lblMensaje.setText("Bienvenido " + rs.getString("nombre"));
+                    Usuario usuarioActual =
+                            new Usuario();
 
-                abrirModulo(idRol);
+                    usuarioActual.setIdUsuario(
+                            rs.getInt("id_usuario")
+                    );
 
-            } else {
+                    usuarioActual.setNombre(
+                            rs.getString("nombre")
+                    );
 
-                intentosFallidos++;
+                    usuarioActual.setApellido(
+                            rs.getString("apellido")
+                    );
 
-                int restantes = MAX_INTENTOS - intentosFallidos;
+                    usuarioActual.setUsuario(
+                            rs.getString("usuario")
+                    );
 
-                if (restantes > 0) {
+                    usuarioActual.setContrasena(
+                            rs.getString("contrasena")
+                    );
 
-                    lblMensaje.setText("Credenciales incorrectas. Intentos restantes: " + restantes);
+                    usuarioActual.setTelefono(
+                            rs.getString("telefono")
+                    );
+
+                    usuarioActual.setCorreo(
+                            rs.getString("correo")
+                    );
+
+                    usuarioActual.setEstado(
+                            rs.getInt("estado")
+                    );
+
+                    usuarioActual.setIdRol(idRol);
+
+                    lblMensaje.setText(
+                            "Bienvenido "
+                                    + usuarioActual.getNombre()
+                    );
+
+                    System.out.println(
+                            "Usuario autenticado: "
+                                    + usuarioActual.getIdUsuario()
+                                    + " - "
+                                    + usuarioActual.getNombre()
+                    );
+
+                    abrirModulo(
+                            idRol,
+                            usuarioActual
+                    );
 
                 } else {
 
-                    lblMensaje.setText("Cuenta bloqueada.");
+                    intentosFallidos++;
 
-                    deshabilitarCampos();
+                    int restantes =
+                            MAX_INTENTOS
+                                    - intentosFallidos;
 
+                    if (restantes > 0) {
+
+                        lblMensaje.setText(
+                                "Credenciales incorrectas. "
+                                        + "Intentos restantes: "
+                                        + restantes
+                        );
+
+                    } else {
+
+                        lblMensaje.setText(
+                                "Cuenta bloqueada."
+                        );
+
+                        deshabilitarCampos();
+                    }
                 }
-
             }
 
         } catch (SQLException e) {
 
             e.printStackTrace();
 
-            lblMensaje.setText("Error de conexión.");
-
+            lblMensaje.setText(
+                    "Error de conexión."
+            );
         }
-
     }
 
     private int obtenerIdRol(String rol) {
 
         return switch (rol) {
-
             case "Administrador" -> 1;
-
             case "Cajero" -> 2;
-
             case "Bodeguero" -> 3;
-
             default -> 0;
-
         };
-
     }
 
-    private void abrirModulo(int idRol) {
+    private void abrirModulo(
+            int idRol,
+            Usuario usuarioActual
+    ) {
 
         String vista = switch (idRol) {
-
             case 1 -> "admin.fxml";
-
             case 2 -> "cajero.fxml";
-
             case 3 -> "bodeguero.fxml";
-
             default -> "";
-
         };
 
         if (vista.isEmpty()) {
 
-            lblMensaje.setText("Rol no válido.");
+            lblMensaje.setText(
+                    "Rol no válido."
+            );
 
             return;
-
         }
 
         try {
 
-            Parent root = FXMLLoader.load(
-                    getClass().getResource("/com/example/papeleria_proyecto/view/" + vista));
+            FXMLLoader loader =
+                    new FXMLLoader(
+                            getClass().getResource(
+                                    "/com/example/papeleria_proyecto/view/"
+                                            + vista
+                            )
+                    );
 
-            Stage stage = (Stage) txtUsuario.getScene().getWindow();
+            Parent root =
+                    loader.load();
 
-            stage.setScene(new Scene(root));
+            if (idRol == 2) {
 
+                CajeroController cajeroController =
+                        loader.getController();
+
+                cajeroController.setUsuarioActual(
+                        usuarioActual
+                );
+            }
+
+            Stage stage =
+                    (Stage) txtUsuario
+                            .getScene()
+                            .getWindow();
+
+            stage.setScene(
+                    new Scene(root)
+            );
+
+            stage.centerOnScreen();
             stage.show();
 
         } catch (IOException e) {
 
             e.printStackTrace();
 
-            lblMensaje.setText("No se pudo abrir el módulo.");
-
+            lblMensaje.setText(
+                    "No se pudo abrir el módulo."
+            );
         }
-
     }
 
     private void deshabilitarCampos() {
 
         txtUsuario.setDisable(true);
-
         txtPassword.setDisable(true);
-
         cbRol.setDisable(true);
-
     }
 
     @FXML
     private void salir() {
 
-        Stage stage = (Stage) txtUsuario.getScene().getWindow();
+        Stage stage =
+                (Stage) txtUsuario
+                        .getScene()
+                        .getWindow();
 
         stage.close();
-
     }
-
 }
