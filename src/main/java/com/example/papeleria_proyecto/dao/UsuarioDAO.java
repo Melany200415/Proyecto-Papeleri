@@ -1,6 +1,5 @@
 package com.example.papeleria_proyecto.dao;
 
-
 import com.example.papeleria_proyecto.db.Conexion;
 import com.example.papeleria_proyecto.model.Usuario;
 import javafx.collections.FXCollections;
@@ -11,11 +10,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UsuarioDAO {
+public class UsuarioDAO implements ICRUD<Usuario> {
 
+    @Override
     public boolean insertar(Usuario u) {
         String sql = "INSERT INTO usuarios (nombre, apellido, usuario, contrasena, telefono, correo, estado, id_rol) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -36,9 +37,11 @@ public class UsuarioDAO {
         }
     }
 
+    @Override
     public boolean actualizar(Usuario u) {
         String sql = "UPDATE usuarios SET nombre=?, apellido=?, usuario=?, contrasena=?, telefono=?, "
                 + "correo=?, estado=?, id_rol=? WHERE id_usuario=?";
+
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -60,13 +63,16 @@ public class UsuarioDAO {
         }
     }
 
-    // Baja lógica (no borra el registro, solo cambia el estado a 0)
+    // Baja lógica
+    @Override
     public boolean eliminar(int idUsuario) {
         String sql = "UPDATE usuarios SET estado = 0 WHERE id_usuario = ?";
+
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idUsuario);
+
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
@@ -75,7 +81,9 @@ public class UsuarioDAO {
         }
     }
 
+    @Override
     public ObservableList<Usuario> listarTodos() {
+
         ObservableList<Usuario> lista = FXCollections.observableArrayList();
         String sql = "SELECT * FROM usuarios";
 
@@ -96,22 +104,28 @@ public class UsuarioDAO {
                         rs.getInt("id_rol")
                 ));
             }
+
             System.out.println(lista.size());
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return lista;
     }
 
+    // Método propio del DAO
     public Usuario buscarPorId(int idUsuario) {
+
         String sql = "SELECT * FROM usuarios WHERE id_usuario = ?";
+
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idUsuario);
+
             try (ResultSet rs = ps.executeQuery()) {
+
                 if (rs.next()) {
                     return new Usuario(
                             rs.getInt("id_usuario"),
@@ -130,6 +144,7 @@ public class UsuarioDAO {
         } catch (SQLException e) {
             System.err.println("Error al buscar usuario: " + e.getMessage());
         }
+
         return null;
     }
 }

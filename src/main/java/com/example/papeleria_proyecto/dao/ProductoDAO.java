@@ -12,11 +12,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductoDAO {
+public class ProductoDAO implements ICRUD<Producto> {
 
+    @Override
     public boolean insertar(Producto p) {
         String sql = "INSERT INTO productos (codigo, nombre, descripcion, precio, stock, estado, id_categoria) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -36,9 +38,11 @@ public class ProductoDAO {
         }
     }
 
+    @Override
     public boolean actualizar(Producto p) {
         String sql = "UPDATE productos SET codigo=?, nombre=?, descripcion=?, precio=?, stock=?, "
                 + "estado=?, id_categoria=? WHERE id_producto=?";
+
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -59,12 +63,16 @@ public class ProductoDAO {
         }
     }
 
+    @Override
     public boolean eliminar(int idProducto) {
+        // Eliminado lógico (cambia estado a 0)
         String sql = "UPDATE productos SET estado = 0 WHERE id_producto = ?";
+
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idProducto);
+
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
@@ -73,6 +81,7 @@ public class ProductoDAO {
         }
     }
 
+    @Override
     public ObservableList<Producto> listarTodos() {
         ObservableList<Producto> lista = FXCollections.observableArrayList();
         String sql = "SELECT * FROM productos WHERE estado = 1";
@@ -101,12 +110,16 @@ public class ProductoDAO {
         return lista;
     }
 
+    // --- MÉTODOS ESPECÍFICOS DE PRODUCTODAO ---
+
     public Producto buscarPorId(int idProducto) {
         String sql = "SELECT * FROM productos WHERE id_producto = ?";
+
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idProducto);
+
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new Producto(
@@ -123,15 +136,16 @@ public class ProductoDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("Error al buscar producto: " + e.getMessage());
+            System.err.println("Error al buscar producto por ID: " + e.getMessage());
         }
+
         return null;
     }
 
-    // Buscar por Código o Nombre (Solo productos activos, estado = 1)
     public List<Producto> buscarPorCodigoONombre(String criterio) {
         List<Producto> lista = new ArrayList<>();
         String sql = "SELECT * FROM productos WHERE (codigo = ? OR nombre LIKE ?) AND estado = 1";
+
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -152,15 +166,17 @@ public class ProductoDAO {
                     ));
                 }
             }
+
         } catch (SQLException e) {
-            System.err.println("Error al buscar por código o nombre: " + e.getMessage());
+            System.err.println("Error al buscar producto por criterio: " + e.getMessage());
         }
+
         return lista;
     }
 
-    // Descontar Stock automáticamente al cobrar
     public boolean descontarStock(int idProducto, int cantidadVendida) {
         String sql = "UPDATE productos SET stock = stock - ? WHERE id_producto = ? AND stock >= ?";
+
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -169,6 +185,7 @@ public class ProductoDAO {
             ps.setInt(3, cantidadVendida);
 
             return ps.executeUpdate() > 0;
+
         } catch (SQLException e) {
             System.err.println("Error al descontar stock: " + e.getMessage());
             return false;
