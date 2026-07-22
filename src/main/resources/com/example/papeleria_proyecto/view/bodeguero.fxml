@@ -8,46 +8,45 @@
 <BorderPane prefHeight="720.0" prefWidth="1250.0" styleClass="border-pane" stylesheets="@../css/estilos.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.papeleria_proyecto.controller.BodegueroController">
 
     <top>
-        <VBox alignment="CENTER" prefHeight="203.0" prefWidth="1266.0" spacing="8">
+        <VBox alignment="CENTER" prefHeight="180.0" prefWidth="1250.0" spacing="8">
             <padding>
-                <Insets bottom="15" top="15" />
+                <Insets bottom="10" top="10" />
             </padding>
 
-            <ImageView fitHeight="127.0" fitWidth="124.0" preserveRatio="true">
+            <ImageView fitHeight="110.0" fitWidth="110.0" preserveRatio="true">
                 <image>
                     <Image url="@../images/bodeguero1.png" />
                 </image>
             </ImageView>
 
-            <Label styleClass="bodega-title" stylesheets="@../css/estilos.css" text="MÓDULO BODEGUERO" />
-            <Label styleClass="bodega-subtitle" stylesheets="@../css/estilos.css" text="Control de Inventario " />
+            <Label styleClass="bodega-title" text="MÓDULO BODEGUERO" />
+            <Label styleClass="bodega-subtitle" text="Control de Inventario y Stock" />
         </VBox>
     </top>
 
     <left>
-        <VBox alignment="TOP_CENTER" prefWidth="220" spacing="15" styleClass="bodega-menu" stylesheets="@../css/estilos.css">
+        <VBox alignment="TOP_CENTER" prefWidth="220" spacing="15" styleClass="bodega-menu">
             <padding>
                 <Insets left="15" right="15" top="20" />
             </padding>
 
-            <Button onAction="#mostrarProductos" prefWidth="180" text="Productos" />
+            <Button onAction="#mostrarProductos" prefWidth="180" text=" Ver Productos" />
+            <Button onAction="#mostrarStockBajo" prefWidth="180" text="Stock Bajo " />
+            <Button onAction="#mostrarCategorias" prefWidth="180" text="Categorias" />
 
-            <Button onAction="#mostrarCategorias" prefWidth="180" text="Categorías" />
+            <Separator prefWidth="180" />
 
-            <Button onAction="#mostrarDetalleVentas" prefWidth="180" text="Detalle de Ventas" />
+            <Button onAction="#cerrarSesion" prefWidth="180" styleClass="btn-eliminar" text=" Cerrar Sesión" />
         </VBox>
     </left>
 
     <center>
-
-        <VBox prefHeight="514.0" prefWidth="1039.0" spacing="15" styleClass="bodega-panel" stylesheets="@../css/estilos.css">
-
+        <VBox prefHeight="514.0" prefWidth="1039.0" spacing="15" styleClass="bodega-panel">
             <padding>
                 <Insets bottom="20" left="20" right="20" top="15" />
             </padding>
 
             <GridPane hgap="12" vgap="12">
-
                 <columnConstraints>
                     <ColumnConstraints prefWidth="90" />
                     <ColumnConstraints prefWidth="220" />
@@ -56,79 +55,58 @@
                 </columnConstraints>
 
                 <Label text="Código" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-
                 <TextField fx:id="txtCodigo" promptText="Código" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                 <Label text="Nombre" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-
                 <TextField fx:id="txtNombre" promptText="Nombre" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
-                <Label text="Precio" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-
-                <TextField fx:id="txtPrecio" promptText="Precio" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label text="Precio ($)" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextField fx:id="txtPrecio" promptText="0.00" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                 <Label text="Stock" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-
-                <TextField fx:id="txtStock" promptText="Stock" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                <TextField fx:id="txtStock" promptText="0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
 
                 <Label text="Categoría" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-
                 <ComboBox fx:id="cbCategoria" prefWidth="220" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
                 <Label text="Estado" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-
                 <ComboBox fx:id="cbEstado" prefWidth="220" GridPane.columnIndex="3" GridPane.rowIndex="2" />
 
                 <Label text="Descripción" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-
-                <TextArea fx:id="txtDescripcion" prefRowCount="3" promptText="Descripción del producto" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
+                <TextArea fx:id="txtDescripcion" prefRowCount="2" promptText="Descripción del producto" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
             <rowConstraints>
                <RowConstraints />
                <RowConstraints />
                <RowConstraints />
                <RowConstraints />
             </rowConstraints>
-
             </GridPane>
 
-            <HBox alignment="CENTER" spacing="15">
-
-                <Button onAction="#nuevo" styleClass="btn-nuevo" stylesheets="@../css/estilos.css" text="Nuevo" />
-
-                <Button onAction="#guardar" styleClass="btn-guardar" stylesheets="@../css/estilos.css" text="Guardar" />
-
-                <Button onAction="#editar" styleClass="btn-editar" stylesheets="@../css/estilos.css" text="Editar" />
-
-                <Button onAction="#eliminar" styleClass="btn-eliminar" stylesheets="@../css/estilos.css" text="Eliminar" />
-
-                <Button onAction="#limpiar" styleClass="btn-limpiar" stylesheets="@../css/estilos.css" text="Limpiar" />
-
+            <!-- ACCIONES DE INVENTARIO -->
+            <HBox alignment="CENTER" spacing="12">
+                <Button onAction="#nuevo" styleClass="btn-nuevo" text="Nuevo" />
+                <Button onAction="#guardar" styleClass="btn-guardar" text="Guardar" />
+                <Button onAction="#editar" styleClass="btn-editar" text="Editar" />
+                <Button onAction="#eliminar" styleClass="btn-eliminar" text="Eliminar" />
+                <Button onAction="#registrarEntradaStock" styleClass="btn-guardar" text=" Entrada Stock" />
+                <Button onAction="#registrarSalidaStock" styleClass="btn-eliminar" text=" Salida (Merma)" />
+                <Button onAction="#limpiar" styleClass="btn-limpiar" text="Limpiar" />
             </HBox>
 
-            <TableView fx:id="tblDatos" prefHeight="233.0" prefWidth="1020.0" styleClass="bodega-table" stylesheets="@../css/estilos.css" VBox.vgrow="ALWAYS">
-
+            <!-- TABLA PRINCIPAL -->
+            <TableView fx:id="tblDatos" prefHeight="233.0" prefWidth="1020.0" styleClass="bodega-table" VBox.vgrow="ALWAYS">
                 <columns>
-
-                    <TableColumn fx:id="col1" prefWidth="109.0" text="Código" />
-
-                    <TableColumn fx:id="col2" prefWidth="191.0" text="Nombre" />
-
-                    <TableColumn fx:id="col3" prefWidth="185.0" text="Descripción" />
-
-                    <TableColumn fx:id="col4" prefWidth="139.0" text="Precio" />
-
-                    <TableColumn fx:id="col5" prefWidth="84.0" text="Stock" />
-
-                    <TableColumn fx:id="col6" prefWidth="93.0" text="Estado" />
-
-                    <TableColumn fx:id="col7" prefWidth="199.0" text="Categoría" />
-
+                    <TableColumn fx:id="col1" prefWidth="110.0" text="Código" />
+                    <TableColumn fx:id="col2" prefWidth="190.0" text="Nombre" />
+                    <TableColumn fx:id="col3" prefWidth="180.0" text="Descripción" />
+                    <TableColumn fx:id="col4" prefWidth="100.0" text="Precio" />
+                    <TableColumn fx:id="col5" prefWidth="80.0" text="Stock" />
+                    <TableColumn fx:id="col6" prefWidth="100.0" text="Estado" />
+                    <TableColumn fx:id="col7" prefWidth="180.0" text="Categoría" />
                 </columns>
-
             </TableView>
 
         </VBox>
-
     </center>
 
 </BorderPane>
