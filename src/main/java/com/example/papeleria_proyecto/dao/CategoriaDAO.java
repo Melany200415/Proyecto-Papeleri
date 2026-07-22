@@ -1,6 +1,5 @@
 package com.example.papeleria_proyecto.dao;
 
-
 import com.example.papeleria_proyecto.db.Conexion;
 import com.example.papeleria_proyecto.model.Categoria;
 import javafx.collections.FXCollections;
@@ -11,10 +10,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CategoriaDAO {
+public class CategoriaDAO implements ICRUD<Categoria> {
 
+    @Override
     public boolean insertar(Categoria c) {
         String sql = "INSERT INTO categorias (nombre, descripcion) VALUES (?, ?)";
+
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -29,8 +30,10 @@ public class CategoriaDAO {
         }
     }
 
+    @Override
     public boolean actualizar(Categoria c) {
         String sql = "UPDATE categorias SET nombre=?, descripcion=? WHERE id_categoria=?";
+
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -46,12 +49,15 @@ public class CategoriaDAO {
         }
     }
 
+    @Override
     public boolean eliminar(int idCategoria) {
         String sql = "DELETE FROM categorias WHERE id_categoria = ?";
+
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idCategoria);
+
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
@@ -60,8 +66,10 @@ public class CategoriaDAO {
         }
     }
 
+    @Override
     public ObservableList<Categoria> listarTodos() {
         ObservableList<Categoria> lista = FXCollections.observableArrayList();
+
         String sql = "SELECT * FROM categorias";
 
         try (Connection con = Conexion.getConexion();
@@ -83,13 +91,17 @@ public class CategoriaDAO {
         return lista;
     }
 
+
     public Categoria buscarPorId(int idCategoria) {
         String sql = "SELECT * FROM categorias WHERE id_categoria = ?";
+
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idCategoria);
+
             try (ResultSet rs = ps.executeQuery()) {
+
                 if (rs.next()) {
                     return new Categoria(
                             rs.getInt("id_categoria"),
@@ -102,6 +114,7 @@ public class CategoriaDAO {
         } catch (SQLException e) {
             System.err.println("Error al buscar categoría: " + e.getMessage());
         }
+
         return null;
     }
 }
